@@ -1,7 +1,7 @@
-GET http://localhost:3000/items
+GET http://localhost:3001/items
 Accept: application/json
 
 ###
 
-GET http://localhost:3000/items/01
+GET http://localhost:3001/items/01
 Accept: application/json

@@ -42,7 +42,7 @@ app.get("/success", function (_req, res) {
   });
 });
 
-const PORT = 3000;
+const PORT = 3001;
 
 connectToDatabase()
   .then(() => {
