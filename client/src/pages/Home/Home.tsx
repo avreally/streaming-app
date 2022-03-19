@@ -1,9 +1,9 @@
 import React from "react";
-import "./App.css";
-import ListOfFavourites from "./components/ListOfFavourites/ListOfFavourites";
-import SearchForm from "./components/SearchForm/SearchForm";
+import "./Home.css";
+import ListOfFavourites from "../../components/ListOfFavourites/ListOfFavourites";
+import SearchForm from "../../components/SearchForm/SearchForm";
 
-function App() {
+function Home() {
   return (
     <div className="App">
       <h1>Streaming app</h1>
@@ -13,4 +13,4 @@ function App() {
   );
 }
 
-export default App;
+export default Home;

@@ -1,6 +1,6 @@
 import "./Login.css";
-import Button from "../components/Button/Button";
-import App from "../App";
+import Button from "../../components/Button/Button";
+import Home from "../Home/Home";
 
 const Login = () => {
   return (
