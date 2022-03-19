@@ -1,3 +1,13 @@
+POST http://localhost:3001/users
+Content-Type: application/json
+
+{
+  "name": "Anna",
+  "github": 24525245,
+  "_id": "ee"
+}
+
+###
 GET http://localhost:3001/items
 Accept: application/json
 
@@ -5,3 +15,4 @@ Accept: application/json
 
 GET http://localhost:3001/items/01
 Accept: application/json
+
