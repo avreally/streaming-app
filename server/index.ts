@@ -3,26 +3,56 @@ import { collections, connectToDatabase } from "./services/database.service";
 import { itemsRouter } from "./routes/items.router";
 import "dotenv/config";
 import axios from "axios";
-// import cors from "cors";
 import User from "./models/user";
+import sessions from "express-session";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
-// const allowedOrigins = ["http://localhost:3000", "http://localhost:3001"];
-//
-// const options: cors.CorsOptions = {
-//   origin: allowedOrigins,
-//   methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
-// };
-//
-// app.use(cors(options));
-
 app.use(express.json());
+app.use(cookieParser());
 
 const clientId = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
 
+const sessionSecret = process.env.SESSIONS_SECRET;
+if (!sessionSecret) {
+  console.error("SESSIONS_SECRET env variable is not set");
+  process.exit();
+}
+
 const PORT = 3001;
+
+const oneDay = 1000 * 60 * 60 * 24;
+app.use(
+  sessions({
+    secret: sessionSecret,
+    saveUninitialized: true,
+    cookie: { maxAge: oneDay },
+    resave: false,
+  })
+);
+
+const checkUserInMongoDB = async (filter: {}) => {
+  const user = await collections.users?.findOne(filter);
+  if (user) {
+    console.log("user already exists");
+    console.log(user);
+    return user;
+  } else {
+    return undefined;
+  }
+};
+
+const createUserInMongoDB = async (userId: number, userName: string) => {
+  try {
+    const newUser = new User(userId, userName, []);
+    await collections.users?.insertOne(newUser);
+  } catch (err) {
+    console.error("Something went wrong creating new user", err.message);
+    // res.sendStatus(404);
+  }
+};
 
 connectToDatabase()
   .then(() => {
@@ -31,6 +61,18 @@ connectToDatabase()
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
+
+    // let session;
+    //
+    // app.get("/", (req, res) => {
+    //   session = req.session;
+    //   if (session.userid) { // checking if session exists, endpoint #1
+    //     // check User in DB, if doesn't exist, create user in DB
+    //
+    //     //  create session, endpoint #2
+    //
+    //   }
+    // });
 
     app.get("/login", (_req, res) => {
       res.redirect(
@@ -50,7 +92,6 @@ connectToDatabase()
         .post(`https://github.com/login/oauth/access_token`, body, options)
         .then((res) => res.data["access_token"])
         .then(async (token) => {
-          console.log("My token:", token);
           // res.json({ ok: 1 });
 
           const { data } = await axios({
@@ -60,24 +101,13 @@ connectToDatabase()
               Authorization: `token ${token}`,
             },
           });
-          console.log(data.id, data.name);
 
-          try {
-            const user = await collections.users?.findOne({
-              githubUserId: data.id,
-            });
-            if (user) {
-              console.log("user already exists");
-            } else {
-              const newUser = new User(data.id, data.name, []);
-              await collections.users?.insertOne(newUser);
-            }
-          } catch (err) {
-            console.error(
-              "Something went wrong creating new user",
-              err.message
-            );
-            res.sendStatus(404);
+          const isUserExistsInDB = await checkUserInMongoDB({
+            githubUserId: data.id,
+          });
+
+          if (isUserExistsInDB === undefined) {
+            await createUserInMongoDB(data.id, data.name);
           }
 
           res.redirect("http://localhost:3000/");
