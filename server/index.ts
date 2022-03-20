@@ -61,8 +61,25 @@ connectToDatabase()
             },
           });
           console.log(data.id, data.name);
-          const newUser = new User(data.id, data.name, []);
-          await collections.users?.insertOne(newUser);
+
+          try {
+            const user = await collections.users?.findOne({
+              githubUserId: data.id,
+            });
+            if (user) {
+              console.log("user already exists");
+            } else {
+              const newUser = new User(data.id, data.name, []);
+              await collections.users?.insertOne(newUser);
+            }
+          } catch (err) {
+            console.error(
+              "Something went wrong creating new user",
+              err.message
+            );
+            res.sendStatus(404);
+          }
+
           res.redirect("http://localhost:3000/");
         })
         .catch((err) => res.status(500).json({ message: err.message }));
