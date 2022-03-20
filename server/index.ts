@@ -3,9 +3,20 @@ import { collections, connectToDatabase } from "./services/database.service";
 import { itemsRouter } from "./routes/items.router";
 import "dotenv/config";
 import axios from "axios";
+// import cors from "cors";
 import User from "./models/user";
 
 const app = express();
+
+// const allowedOrigins = ["http://localhost:3000", "http://localhost:3001"];
+//
+// const options: cors.CorsOptions = {
+//   origin: allowedOrigins,
+//   methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
+// };
+//
+// app.use(cors(options));
+
 app.use(express.json());
 
 const clientId = process.env.CLIENT_ID;
@@ -40,7 +51,7 @@ connectToDatabase()
         .then((res) => res.data["access_token"])
         .then(async (token) => {
           console.log("My token:", token);
-          res.json({ ok: 1 });
+          // res.json({ ok: 1 });
 
           const { data } = await axios({
             url: "https://api.github.com/user",
@@ -52,6 +63,7 @@ connectToDatabase()
           console.log(data.id, data.name);
           const newUser = new User(data.id, data.name, []);
           await collections.users?.insertOne(newUser);
+          res.redirect("http://localhost:3000/");
         })
         .catch((err) => res.status(500).json({ message: err.message }));
     });

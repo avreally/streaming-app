@@ -1,12 +1,22 @@
 import "./Login.css";
 import Button from "../../components/Button/Button";
-import Home from "../Home/Home";
+
+const baseUrl = "http://localhost:3001";
 
 const Login = () => {
+  const handleLogin = () => {
+    console.log("clicked");
+    window.location.href = `${baseUrl}/login`;
+  };
+
   return (
     <div>
       Login page
-      <Button className="LoginButton" buttonName="Login" />
+      <Button
+        className="LoginButton"
+        buttonName="Login"
+        onClick={handleLogin}
+      />
     </div>
   );
 };
