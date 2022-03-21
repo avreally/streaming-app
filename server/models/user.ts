@@ -5,6 +5,6 @@ export default class User {
     public githubUserId: number,
     public userName: string,
     public favouriteItems: ObjectId[],
-    public _id?: ObjectId
+    public _id: ObjectId
   ) {}
 }

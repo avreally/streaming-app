@@ -6,8 +6,12 @@ import axios from "axios";
 import User from "./models/user";
 import sessions from "express-session";
 import cookieParser from "cookie-parser";
+import { ObjectId } from "mongodb";
+import cors from "cors";
 
 const app = express();
+
+app.use(cors());
 
 app.use(express.json());
 app.use(cookieParser());
@@ -28,16 +32,14 @@ app.use(
   sessions({
     secret: sessionSecret,
     saveUninitialized: true,
-    cookie: { maxAge: oneDay },
+    cookie: { maxAge: oneDay, sameSite: false },
     resave: false,
   })
 );
 
-const checkUserInMongoDB = async (filter: {}) => {
+const findUserInMongoDB = async (filter: {}) => {
   const user = await collections.users?.findOne(filter);
   if (user) {
-    console.log("user already exists");
-    console.log(user);
     return user;
   } else {
     return undefined;
@@ -46,10 +48,12 @@ const checkUserInMongoDB = async (filter: {}) => {
 
 const createUserInMongoDB = async (userId: number, userName: string) => {
   try {
-    const newUser = new User(userId, userName, []);
+    const newUser = new User(userId, userName, [], new ObjectId());
     await collections.users?.insertOne(newUser);
+    return newUser;
   } catch (err) {
     console.error("Something went wrong creating new user", err.message);
+    return undefined;
     // res.sendStatus(404);
   }
 };
@@ -62,17 +66,28 @@ connectToDatabase()
       console.log(`Server is running on port ${PORT}`);
     });
 
-    // let session;
-    //
-    // app.get("/", (req, res) => {
-    //   session = req.session;
-    //   if (session.userid) { // checking if session exists, endpoint #1
-    //     // check User in DB, if doesn't exist, create user in DB
-    //
-    //     //  create session, endpoint #2
-    //
-    //   }
-    // });
+    app.get("/", async (req, res) => {
+      const session = req.session;
+
+      console.log("session userId", session.userId);
+
+      if (session.userId) {
+        // checking if session exists, endpoint #1
+        const foundUser = await findUserInMongoDB({
+          _id: new ObjectId(session.userId),
+        });
+        console.log("session exists, foundUser is", foundUser);
+        if (foundUser) {
+          console.log("user already exists");
+          // console.log("Existing user is", user);
+          // console.log("_id is", user._id.toString());
+          // TODO go to homepage, show userName and logout button
+          res.redirect("http://localhost:3000/");
+        }
+      } else {
+        res.redirect("http://localhost:3000/login");
+      }
+    });
 
     app.get("/login", (_req, res) => {
       res.redirect(
@@ -92,8 +107,6 @@ connectToDatabase()
         .post(`https://github.com/login/oauth/access_token`, body, options)
         .then((res) => res.data["access_token"])
         .then(async (token) => {
-          // res.json({ ok: 1 });
-
           const { data } = await axios({
             url: "https://api.github.com/user",
             method: "get",
@@ -102,17 +115,36 @@ connectToDatabase()
             },
           });
 
-          const isUserExistsInDB = await checkUserInMongoDB({
+          let foundUser = await findUserInMongoDB({
             githubUserId: data.id,
           });
 
-          if (isUserExistsInDB === undefined) {
-            await createUserInMongoDB(data.id, data.name);
+          if (foundUser === undefined) {
+            foundUser = await createUserInMongoDB(data.id, data.name);
           }
 
+          if (foundUser === undefined) {
+            return;
+          }
+
+          // creating session, endpoint #2
+          const session = req.session;
+          session.userId = foundUser._id.toString();
+          console.log("created session for new user", foundUser._id.toString());
+
           res.redirect("http://localhost:3000/");
+          res.end();
         })
         .catch((err) => res.status(500).json({ message: err.message }));
+    });
+
+    app.get("/me", async (req, res) => {
+      console.log("session id", req.session.userId);
+      const foundUser = await findUserInMongoDB({
+        _id: new ObjectId(req.session.userId),
+      });
+      console.log(foundUser);
+      res.send(foundUser);
     });
   })
   .catch((error: Error) => {
