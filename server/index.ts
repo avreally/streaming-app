@@ -5,16 +5,14 @@ import "dotenv/config";
 import axios from "axios";
 import User from "./models/user";
 import sessions from "express-session";
-import cookieParser from "cookie-parser";
 import { ObjectId } from "mongodb";
 import cors from "cors";
 
 const app = express();
 
-app.use(cors());
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 
 app.use(express.json());
-app.use(cookieParser());
 
 const clientId = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
@@ -54,7 +52,6 @@ const createUserInMongoDB = async (userId: number, userName: string) => {
   } catch (err) {
     console.error("Something went wrong creating new user", err.message);
     return undefined;
-    // res.sendStatus(404);
   }
 };
 
@@ -66,28 +63,28 @@ connectToDatabase()
       console.log(`Server is running on port ${PORT}`);
     });
 
-    app.get("/", async (req, res) => {
-      const session = req.session;
-
-      console.log("session userId", session.userId);
-
-      if (session.userId) {
-        // checking if session exists, endpoint #1
-        const foundUser = await findUserInMongoDB({
-          _id: new ObjectId(session.userId),
-        });
-        console.log("session exists, foundUser is", foundUser);
-        if (foundUser) {
-          console.log("user already exists");
-          // console.log("Existing user is", user);
-          // console.log("_id is", user._id.toString());
-          // TODO go to homepage, show userName and logout button
-          res.redirect("http://localhost:3000/");
-        }
-      } else {
-        res.redirect("http://localhost:3000/login");
-      }
-    });
+    // app.get("/", async (req, res) => {
+    //   const session = req.session;
+    //
+    //   console.log("session userId", session.userId);
+    //
+    //   if (session.userId) {
+    //     // checking if session exists
+    //     const foundUser = await findUserInMongoDB({
+    //       _id: new ObjectId(session.userId),
+    //     });
+    //     console.log("session exists, foundUser is", foundUser);
+    //     if (foundUser) {
+    //       console.log("user already exists");
+    //       // console.log("Existing user is", user);
+    //       // console.log("_id is", user._id.toString());
+    //       // TODO go to homepage, show userName and logout button
+    //       res.redirect("http://localhost:3000/");
+    //     }
+    //   } else {
+    //     res.redirect("http://localhost:3001/login");
+    //   }
+    // });
 
     app.get("/login", (_req, res) => {
       res.redirect(
@@ -127,7 +124,7 @@ connectToDatabase()
             return;
           }
 
-          // creating session, endpoint #2
+          // creating session
           const session = req.session;
           session.userId = foundUser._id.toString();
           console.log("created session for new user", foundUser._id.toString());
@@ -144,7 +141,21 @@ connectToDatabase()
         _id: new ObjectId(req.session.userId),
       });
       console.log(foundUser);
+      if (!foundUser) {
+        res.status(401);
+        res.end();
+        return;
+      }
       res.send(foundUser);
+    });
+
+    app.get("/logout", (req, res) => {
+      req.session.destroy((err: any) => {
+        console.log(err);
+        res.clearCookie("connect.sid");
+        res.redirect("http://localhost:3000/");
+      });
+      console.log("session id after logout", req.session);
     });
   })
   .catch((error: Error) => {
