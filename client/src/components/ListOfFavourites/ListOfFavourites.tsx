@@ -1,5 +1,5 @@
 import "./ListOfFavourites.css";
-import FavouriteItem from "../FavouriteItem/FavouriteItem";
+// import FavouriteItem from "../FavouriteItem/FavouriteItem";
 
 type ListOfFavouritesProps = {
   className: string;
@@ -8,9 +8,8 @@ type ListOfFavouritesProps = {
 const ListOfFavourites = ({ className }: ListOfFavouritesProps) => {
   return (
     <div>
-      <h2>List of Favourites:</h2>
-      <FavouriteItem className={className} />
-      <FavouriteItem className={className} />
+      <h2 className={className}>List of Favourites:</h2>
+      {/*<FavouriteItem className={className} />*/}
     </div>
   );
 };
