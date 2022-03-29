@@ -1,6 +1,16 @@
+.allSongsWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+}
+
+
 .allSongsContainer {
   display: flex;
-  flex-direction: row;
-  gap: 2%;
-  justify-content: center;
+  flex-direction: column;
+  gap: 2rem;
+  /*max-width: 80%;*/
+  align-items: center;
+  width: 100%;
 }

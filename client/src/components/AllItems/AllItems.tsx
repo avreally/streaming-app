@@ -10,11 +10,17 @@ type AllItemsProps = {
 
 const AllItems = ({ className, itemsData }: AllItemsProps) => {
   return (
-    <div>
+    <div className="allSongsWrapper">
       <h2>All songs:</h2>
       <div className="allSongsContainer">
         {itemsData.map((item) => (
-          <Item key={item._id} title={item.title} className={className} />
+          <Item
+            key={item._id}
+            title={item.title}
+            className={className}
+            url={item.url}
+            artist={item.artist}
+          />
         ))}
       </div>
     </div>
