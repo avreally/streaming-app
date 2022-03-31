@@ -72,7 +72,7 @@ function Home() {
           />
         </div>
       )}
-      <SearchForm className="searchForm" placeholder="Search" />
+      <SearchForm className="searchForm" placeholder="Enter song name" />
       <ListOfFavourites className="listOfFavourites" />
       {itemsData !== undefined ? (
         <AllItems className="allItems" itemsData={itemsData} />

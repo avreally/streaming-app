@@ -7,6 +7,7 @@ import User from "./models/user";
 import sessions from "express-session";
 import { ObjectId } from "mongodb";
 import cors from "cors";
+import Item from "./models/item";
 
 const app = express();
 
@@ -156,6 +157,44 @@ connectToDatabase()
         res.redirect("http://localhost:3000/");
       });
       console.log("session id after logout", req.session);
+    });
+
+    // Searching for song
+    const getUserSearchResult = async (userQuery: string) => {
+      try {
+        const response = await axios.get(`http://localhost:3001/search`, {
+          params: {
+            q: userQuery,
+          },
+        });
+        console.log(response.data);
+        // return getSongData(response.data.response);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    // Selecting specific data from all data about song
+    // const getSongData = (allData) => {
+    //   const allData = new Item (title, url, artist, id);
+    //
+    //   // console.log({ title, artist, songId, songImgUrl });
+    //   return { title, artist, songId, songImgUrl };
+    // };
+
+    app.get("/items/song", async (req, res) => {
+      const query = req.query;
+
+      // let filter = {};
+      //
+      // filter.title = query
+
+      const songs = await collections.items?.find({ title: query }).toArray(); // toArray() is also asynchronous
+
+      // const result = await getUserSearchResult(req.query.search);
+      console.log("searching for", req.query.search);
+      console.log("songs are", songs);
+      res.send(songs);
     });
   })
   .catch((error: Error) => {
