@@ -16,3 +16,8 @@ Accept: application/json
 GET http://localhost:3001/items/01
 Accept: application/json
 
+###
+
+GET http://localhost:3001/items?query=retrowave
+Accept: application/json
+

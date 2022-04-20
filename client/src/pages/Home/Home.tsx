@@ -28,7 +28,7 @@ function Home() {
       .then((response) => {
         // check response status, if !== 200 return
         if (response.status === 200) {
-          console.log("response data", response.data);
+          // console.log("response data", response.data);
           setUserData(response.data);
           setAuthorizeButtonName("Sign out");
         }
@@ -38,7 +38,6 @@ function Home() {
 
   useEffect(() => {
     axios.get(`${baseUrl}/items`).then((response) => {
-      console.log("items data", response.data);
       setItemsData(response.data);
     });
   }, []);
@@ -51,6 +50,17 @@ function Home() {
   const handleSignOut = () => {
     console.log("clicked to sign out");
     window.location.href = `${baseUrl}/logout`;
+  };
+
+  // Moved from the SearchForm component to make the Home component solely
+  // responsible for making server requests and handling songs data
+  // Request to the server, passing user search request
+  const getSong = (userSearchRequest: string) => {
+    return axios
+      .get(`${baseUrl}/items?query=${userSearchRequest}`)
+      .then((response) => {
+        setItemsData(response.data);
+      });
   };
 
   return (
@@ -72,7 +82,11 @@ function Home() {
           />
         </div>
       )}
-      <SearchForm className="searchForm" placeholder="Search" />
+      <SearchForm
+        className="searchForm"
+        placeholder="Enter song name"
+        onSubmit={getSong}
+      />
       <ListOfFavourites className="listOfFavourites" />
       {itemsData !== undefined ? (
         <AllItems className="allItems" itemsData={itemsData} />
