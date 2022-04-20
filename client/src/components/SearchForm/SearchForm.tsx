@@ -3,12 +3,11 @@ import InputField from "../InputField/InputField";
 import Button from "../Button/Button";
 import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
 import React from "react";
 
 type SearchFormProps = {
   className: string;
-  onSubmit?: () => void;
+  onSubmit: (query: string) => void;
   placeholder: string;
 };
 
@@ -19,34 +18,23 @@ const SearchForm = ({ className, onSubmit, placeholder }: SearchFormProps) => {
     searchParams.get("query") ?? ""
   );
 
-  const baseUrl = "http://localhost:3001/items/song";
+  const baseUrl = "http://localhost:3001/items";
 
   // Putting user request to URL
   const updateSearchParams = (query: string) => {
     if (query) {
       setSearchParams({ query });
-      console.log("search params", searchParams);
+      console.log("search params", searchParams.get("query"));
     } else {
       setSearchParams({});
     }
-  };
-
-  // Request to the server, passing user search request
-  const getSong = (userSearchRequest: string) => {
-    return axios
-      .get(`${baseUrl}?search=${userSearchRequest}`)
-      .then((response) => {
-        return response.data;
-      });
   };
 
   const searchForSong = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log("submitted");
     updateSearchParams(searchQuery);
-    getSong(searchQuery).then((result) => {
-      setSongData(result);
-    });
+    onSubmit(searchQuery); // call onSubmit function that is passed in props from the parent component
   };
 
   return (

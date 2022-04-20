@@ -1,13 +1,11 @@
 import express from "express";
 import { collections, connectToDatabase } from "./services/database.service";
-import { itemsRouter } from "./routes/items.router";
 import "dotenv/config";
 import axios from "axios";
 import User from "./models/user";
 import sessions from "express-session";
 import { ObjectId } from "mongodb";
 import cors from "cors";
-import Item from "./models/item";
 
 const app = express();
 
@@ -58,34 +56,12 @@ const createUserInMongoDB = async (userId: number, userName: string) => {
 
 connectToDatabase()
   .then(() => {
-    app.use("/items", itemsRouter);
+    // removed because it overrides the route designed for search request
+    // app.use("/items", itemsRouter);
 
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
-
-    // app.get("/", async (req, res) => {
-    //   const session = req.session;
-    //
-    //   console.log("session userId", session.userId);
-    //
-    //   if (session.userId) {
-    //     // checking if session exists
-    //     const foundUser = await findUserInMongoDB({
-    //       _id: new ObjectId(session.userId),
-    //     });
-    //     console.log("session exists, foundUser is", foundUser);
-    //     if (foundUser) {
-    //       console.log("user already exists");
-    //       // console.log("Existing user is", user);
-    //       // console.log("_id is", user._id.toString());
-    //       // TODO go to homepage, show userName and logout button
-    //       res.redirect("http://localhost:3000/");
-    //     }
-    //   } else {
-    //     res.redirect("http://localhost:3001/login");
-    //   }
-    // });
 
     app.get("/login", (_req, res) => {
       res.redirect(
@@ -159,40 +135,15 @@ connectToDatabase()
       console.log("session id after logout", req.session);
     });
 
-    // Searching for song
-    const getUserSearchResult = async (userQuery: string) => {
-      try {
-        const response = await axios.get(`http://localhost:3001/search`, {
-          params: {
-            q: userQuery,
-          },
-        });
-        console.log(response.data);
-        // return getSongData(response.data.response);
-      } catch (err) {
-        console.error(err);
-      }
-    };
+    app.get("/items", async (req, res) => {
+      const query = req.query.query; // req.query.query because query parameter is called "query" in the user search request
 
-    // Selecting specific data from all data about song
-    // const getSongData = (allData) => {
-    //   const allData = new Item (title, url, artist, id);
-    //
-    //   // console.log({ title, artist, songId, songImgUrl });
-    //   return { title, artist, songId, songImgUrl };
-    // };
+      const search = query ? { title: new RegExp(query as string, "i") } : {}; // conditionally create mongo search
+      // object based on request query
 
-    app.get("/items/song", async (req, res) => {
-      const query = req.query;
+      const songs = await collections.items?.find(search).toArray(); // toArray() is also asynchronous
 
-      // let filter = {};
-      //
-      // filter.title = query
-
-      const songs = await collections.items?.find({ title: query }).toArray(); // toArray() is also asynchronous
-
-      // const result = await getUserSearchResult(req.query.search);
-      console.log("searching for", req.query.search);
+      console.log("searching for", query);
       console.log("songs are", songs);
       res.send(songs);
     });
