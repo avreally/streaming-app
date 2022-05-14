@@ -25,7 +25,12 @@ const Navbar = ({ getSong, userData, authorizeButtonName }: NavbarProps) => {
   };
 
   return (
-    <nav>
+    <nav className="navbar">
+      <SearchForm
+        className="searchForm"
+        placeholder="Enter song name"
+        onSubmit={getSong}
+      />
       {userData === undefined ? (
         <Button
           className="signInButton"
@@ -33,7 +38,7 @@ const Navbar = ({ getSong, userData, authorizeButtonName }: NavbarProps) => {
           onClick={handleSignIn}
         />
       ) : (
-        <div>
+        <div className="greeting">
           <UserGreeting className="userGreeting" userData={userData} />
           <Button
             className="signOutButton"
@@ -42,11 +47,6 @@ const Navbar = ({ getSong, userData, authorizeButtonName }: NavbarProps) => {
           />
         </div>
       )}
-      <SearchForm
-        className="searchForm"
-        placeholder="Enter song name"
-        onSubmit={getSong}
-      />
     </nav>
   );
 };
