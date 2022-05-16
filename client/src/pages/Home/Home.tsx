@@ -82,8 +82,9 @@ function Home() {
               />
             </div>
           )}
+          <div>My favourites</div>
+          <div>All music</div>
         </div>
-        <ListOfFavourites className="listOfFavourites" />
         {itemsData !== undefined ? (
           <AllItems className="allItems" itemsData={itemsData} />
         ) : null}
