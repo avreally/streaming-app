@@ -6,6 +6,8 @@
 .main {
   display: flex;
   flex-direction: row;
+  gap: 3%;
+  padding: 3%;
 }
 
 .sidebar {
@@ -13,4 +15,10 @@
   flex-direction: column;
   gap: 24px;
   flex-basis: 20%;
+}
+
+.mainSection {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 78%;
 }

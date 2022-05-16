@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./Home.css";
-import ListOfFavourites from "../../components/ListOfFavourites/ListOfFavourites";
 import axios from "axios";
 import AllItems from "../../components/AllItems/AllItems";
 import Navbar from "../../components/Navbar/Navbar";
@@ -85,9 +84,11 @@ function Home() {
           <div>My favourites</div>
           <div>All music</div>
         </div>
-        {itemsData !== undefined ? (
-          <AllItems className="allItems" itemsData={itemsData} />
-        ) : null}
+        <div className="mainSection">
+          {itemsData !== undefined ? (
+            <AllItems className="allItems" itemsData={itemsData} />
+          ) : null}
+        </div>
       </main>
     </div>
   );
