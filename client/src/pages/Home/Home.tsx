@@ -4,6 +4,8 @@ import ListOfFavourites from "../../components/ListOfFavourites/ListOfFavourites
 import axios from "axios";
 import AllItems from "../../components/AllItems/AllItems";
 import Navbar from "../../components/Navbar/Navbar";
+import UserGreeting from "../../components/UserGreeting/UserGreeting";
+import Button from "../../components/Button/Button";
 
 function Home() {
   const [authorizeButtonName, setAuthorizeButtonName] = useState(
@@ -49,17 +51,43 @@ function Home() {
       });
   };
 
+  const handleSignIn = () => {
+    console.log("clicked to sign in");
+    window.location.href = `${baseUrl}/login`;
+  };
+
+  const handleSignOut = () => {
+    console.log("clicked to sign out");
+    window.location.href = `${baseUrl}/logout`;
+  };
+
   return (
     <div className="app">
-      <Navbar
-        getSong={getSong}
-        userData={userData}
-        authorizeButtonName={authorizeButtonName}
-      />
-      <ListOfFavourites className="listOfFavourites" />
-      {itemsData !== undefined ? (
-        <AllItems className="allItems" itemsData={itemsData} />
-      ) : null}
+      <Navbar getSong={getSong} />
+      <main className="main">
+        <div className="sidebar">
+          <UserGreeting className="userGreeting" userData={userData} />
+          {userData === undefined ? (
+            <Button
+              className="signInButton"
+              buttonName={authorizeButtonName}
+              onClick={handleSignIn}
+            />
+          ) : (
+            <div className="greeting">
+              <Button
+                className="signOutButton"
+                buttonName={authorizeButtonName}
+                onClick={handleSignOut}
+              />
+            </div>
+          )}
+        </div>
+        <ListOfFavourites className="listOfFavourites" />
+        {itemsData !== undefined ? (
+          <AllItems className="allItems" itemsData={itemsData} />
+        ) : null}
+      </main>
     </div>
   );
 }
