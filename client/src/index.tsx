@@ -3,9 +3,9 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
-// import Login from "./pages/Login/Login";
 import reportWebVitals from "./reportWebVitals";
 import axios from "axios";
+import ListOfFavourites from "./components/ListOfFavourites/ListOfFavourites";
 
 axios.defaults.withCredentials = true;
 
@@ -14,7 +14,7 @@ ReactDOM.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        {/*<Route path="/login" element={<Login />} />*/}
+        {/*<Route path="/favourites" element={<ListOfFavourites />} />*/}
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,

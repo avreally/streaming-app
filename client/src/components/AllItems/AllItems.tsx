@@ -11,7 +11,7 @@ type AllItemsProps = {
 const AllItems = ({ className, itemsData }: AllItemsProps) => {
   return (
     <div className="allSongsWrapper">
-      <h2>All songs:</h2>
+      <h2>All music:</h2>
       <div className="allSongsContainer">
         {itemsData.map((item) => (
           <Item
