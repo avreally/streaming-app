@@ -1,19 +1,18 @@
 import React, { useEffect, useState, useContext } from "react";
 import "./Home.css";
 import axios from "axios";
-import AllItems from "../../components/AllItems/AllItems";
 import Navbar from "../../components/Navbar/Navbar";
 import UserGreeting from "../../components/UserGreeting/UserGreeting";
 import Button from "../../components/Button/Button";
 import SongsListContext from "../../contexts/SongsListContext";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 function Home() {
   const [authorizeButtonName, setAuthorizeButtonName] = useState(
     "Sign in with GitHub"
   );
   const [userData, setUserData] = useState();
-  const [itemsData, setItemsData] = useContext(SongsListContext);
+  const [, setItemsData] = useContext(SongsListContext);
   const baseUrl = "http://localhost:3001";
 
   // Request to server to get user data
@@ -27,7 +26,6 @@ function Home() {
       .then((response) => {
         // check response status, if !== 200 return
         if (response.status === 200) {
-          // console.log("response data", response.data);
           setUserData(response.data);
           setAuthorizeButtonName("Sign out");
         }
@@ -42,12 +40,10 @@ function Home() {
   }, []);
 
   const handleSignIn = () => {
-    console.log("clicked to sign in");
     window.location.href = `${baseUrl}/login`;
   };
 
   const handleSignOut = () => {
-    console.log("clicked to sign out");
     window.location.href = `${baseUrl}/logout`;
   };
 
@@ -72,17 +68,15 @@ function Home() {
               />
             </div>
           )}
-          <Link to="/favourites">
+          <Link to="favourites">
             <div>My favourites</div>
           </Link>
-          <Link to="/" reloadDocument>
+          <Link to="all-music" reloadDocument>
             <div>All music</div>
           </Link>
         </div>
         <div className="mainSection">
-          {itemsData !== undefined ? (
-            <AllItems className="allItems" itemsData={itemsData} />
-          ) : null}
+          <Outlet />
         </div>
       </main>
     </div>

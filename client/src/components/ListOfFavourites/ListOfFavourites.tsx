@@ -1,10 +1,6 @@
 import "./ListOfFavourites.css";
 // import FavouriteItem from "../FavouriteItem/FavouriteItem";
 
-// type ListOfFavouritesProps = {
-//   className: string;
-// };
-
 const ListOfFavourites = () => {
   return (
     <div>
