@@ -1,25 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home/Home";
 import reportWebVitals from "./reportWebVitals";
 import axios from "axios";
-import ListOfFavourites from "./components/ListOfFavourites/ListOfFavourites";
+import App from "./App";
 
 axios.defaults.withCredentials = true;
 
-ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        {/*<Route path="/favourites" element={<ListOfFavourites />} />*/}
-      </Routes>
-    </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById("root")
-);
+ReactDOM.render(<App />, document.getElementById("root"));
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
