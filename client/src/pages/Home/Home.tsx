@@ -6,6 +6,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import UserGreeting from "../../components/UserGreeting/UserGreeting";
 import Button from "../../components/Button/Button";
 import SongsListContext from "../../contexts/SongsListContext";
+import { Link } from "react-router-dom";
 
 function Home() {
   const [authorizeButtonName, setAuthorizeButtonName] = useState(
@@ -71,8 +72,12 @@ function Home() {
               />
             </div>
           )}
-          <div>My favourites</div>
-          <div>All music</div>
+          <Link to="/favourites">
+            <div>My favourites</div>
+          </Link>
+          <Link to="/" reloadDocument>
+            <div>All music</div>
+          </Link>
         </div>
         <div className="mainSection">
           {itemsData !== undefined ? (

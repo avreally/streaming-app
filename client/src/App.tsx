@@ -3,6 +3,7 @@ import Home from "./pages/Home/Home";
 import React, { useState } from "react";
 import { ItemType } from "../types";
 import SongsListContext from "./contexts/SongsListContext";
+import ListOfFavourites from "./components/ListOfFavourites/ListOfFavourites";
 
 const App = () => {
   const songsList = useState<ItemType[]>([]);
@@ -12,6 +13,7 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/favourites" element={<ListOfFavourites />} />
             {/*<Route path="/favourites" element={<ListOfFavourites />} />*/}
           </Routes>
         </BrowserRouter>
