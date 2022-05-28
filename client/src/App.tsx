@@ -8,16 +8,19 @@ import AllItems from "./components/AllItems/AllItems";
 
 const App = () => {
   const songsList = useState<ItemType[]>([]);
+  const baseUrl = "http://localhost:3001";
+
   return (
     <React.StrictMode>
       <SongsListContext.Provider value={songsList}>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Home />}>
+            <Route path="/" element={<Home baseUrl={baseUrl} />}>
               <Route path="favourites" element={<ListOfFavourites />} />
               <Route
                 path="all-music"
-                element={<AllItems itemsData={songsList[0]} />}
+                element={<AllItems baseUrl={baseUrl} />}
+                // element={<AllItems itemsData={songsList[0]} />}
               />
             </Route>
             {/*<Route path="/favourites" element={<ListOfFavourites />} />*/}

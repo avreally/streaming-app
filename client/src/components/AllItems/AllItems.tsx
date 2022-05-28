@@ -1,14 +1,24 @@
 import "./AllItems.css";
 import Item from "../Item/Item";
-import { ItemType } from "../../../types";
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import SongsListContext from "../../contexts/SongsListContext";
+import axios from "axios";
 // import FavouriteItem from "../FavouriteItem/FavouriteItem";
 
 type AllItemsProps = {
-  itemsData: ItemType[];
+  // itemsData: ItemType[];
+  baseUrl: string;
 };
 
-const AllItems = ({ itemsData }: AllItemsProps) => {
+const AllItems = ({ baseUrl }: AllItemsProps) => {
+  const [itemsData, setItemsData] = useContext(SongsListContext);
+
+  useEffect(() => {
+    axios.get(`${baseUrl}/items`).then((response) => {
+      setItemsData(response.data);
+    });
+  }, []);
+
   return (
     <div className="allSongsWrapper">
       <h2>All music:</h2>
@@ -18,7 +28,6 @@ const AllItems = ({ itemsData }: AllItemsProps) => {
             <Item
               key={item._id}
               title={item.title}
-              // className="allItems"
               url={item.url}
               artist={item.artist}
             />

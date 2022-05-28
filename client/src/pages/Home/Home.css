@@ -10,13 +10,6 @@
   padding: 3%;
 }
 
-.sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  flex-basis: 20%;
-}
-
 .mainSection {
   display: flex;
   flex-direction: column;
