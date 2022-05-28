@@ -62,7 +62,7 @@ const Sidebar = ({ baseUrl }: SidebarProps) => {
         <div>My favourites</div>
       </Link>
       {/*<Link to="all-music" reloadDocument>*/}
-      <Link to="all-music">
+      <Link to="/">
         <div>All music</div>
       </Link>
     </div>

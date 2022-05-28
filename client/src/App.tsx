@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import React, { useState } from "react";
 import { ItemType } from "../types";
@@ -20,10 +20,8 @@ const App = () => {
               <Route
                 path="all-music"
                 element={<AllItems baseUrl={baseUrl} />}
-                // element={<AllItems itemsData={songsList[0]} />}
               />
             </Route>
-            {/*<Route path="/favourites" element={<ListOfFavourites />} />*/}
           </Routes>
         </BrowserRouter>
       </SongsListContext.Provider>

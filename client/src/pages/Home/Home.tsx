@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Home.css";
 import Navbar from "../../components/Navbar/Navbar";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "../../components/Sidebar/Sidebar";
 
 type HomeProps = {
@@ -9,6 +9,15 @@ type HomeProps = {
 };
 
 function Home({ baseUrl }: HomeProps) {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (location.pathname === "/") {
+      navigate("/all-music");
+    }
+  }, [location.pathname]);
+
   return (
     <div className="app">
       <Navbar />
