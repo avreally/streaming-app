@@ -13,12 +13,12 @@ type SearchFormProps = {
 
 const SearchForm = ({ className, onSubmit, placeholder }: SearchFormProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [songData, setSongData] = useState();
+  // const [songData, setSongData] = useState();
   const [searchQuery, setSearchQuery] = useState(
     searchParams.get("query") ?? ""
   );
 
-  const baseUrl = "http://localhost:3001/items";
+  // const baseUrl = "http://localhost:3001/items";
 
   // Putting user request to URL
   const updateSearchParams = (query: string) => {

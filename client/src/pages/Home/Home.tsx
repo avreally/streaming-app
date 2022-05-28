@@ -40,17 +40,6 @@ function Home() {
     });
   }, []);
 
-  // Moved from the SearchForm component to make the Home component solely
-  // responsible for making server requests and handling songs data
-  // Request to the server, passing user search request
-  const getSong = (userSearchRequest: string) => {
-    return axios
-      .get(`${baseUrl}/items?query=${userSearchRequest}`)
-      .then((response) => {
-        setItemsData(response.data);
-      });
-  };
-
   const handleSignIn = () => {
     console.log("clicked to sign in");
     window.location.href = `${baseUrl}/login`;
@@ -63,7 +52,7 @@ function Home() {
 
   return (
     <div className="app">
-      <Navbar getSong={getSong} />
+      <Navbar />
       <main className="main">
         <div className="sidebar">
           <UserGreeting className="userGreeting" userData={userData} />

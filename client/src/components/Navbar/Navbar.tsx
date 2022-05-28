@@ -1,15 +1,22 @@
 import "./Navbar.css";
 import SearchForm from "../SearchForm/SearchForm";
-import React from "react";
+import React, { useContext } from "react";
+import axios from "axios";
+import SongsListContext from "../../contexts/SongsListContext";
 
-type NavbarProps = {
-  getSong: (query: string) => void;
-  // userData: UserType | undefined;
-  // authorizeButtonName: string;
-};
+const Navbar = () => {
+  const [, setItemsData] = useContext(SongsListContext);
 
-const Navbar = ({ getSong }: NavbarProps) => {
   const baseUrl = "http://localhost:3001";
+
+  // Request to the server, passing user search request
+  const getSong = (userSearchRequest: string) => {
+    return axios
+      .get(`${baseUrl}/items?query=${userSearchRequest}`)
+      .then((response) => {
+        setItemsData(response.data);
+      });
+  };
 
   return (
     <nav className="navbar">
