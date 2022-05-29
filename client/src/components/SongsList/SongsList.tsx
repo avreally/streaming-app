@@ -1,30 +1,30 @@
-import "./AllItems.css";
+import "./SongsList.css";
 import Item from "../Item/Item";
 import React, { useContext, useEffect } from "react";
 import SongsListContext from "../../contexts/SongsListContext";
 import axios from "axios";
 // import FavouriteItem from "../FavouriteItem/FavouriteItem";
 
-type AllItemsProps = {
+type SongsListProps = {
   // itemsData: ItemType[];
   baseUrl: string;
 };
 
-const AllItems = ({ baseUrl }: AllItemsProps) => {
-  const [itemsData, setItemsData] = useContext(SongsListContext);
+const SongsList = ({ baseUrl }: SongsListProps) => {
+  const [songs, setSongs] = useContext(SongsListContext);
 
   useEffect(() => {
     axios.get(`${baseUrl}/items`).then((response) => {
-      setItemsData(response.data);
+      setSongs(response.data);
     });
   }, []);
 
   return (
-    <div className="allSongsWrapper">
+    <div className="SongsListWrapper">
       <h2>All music:</h2>
-      {itemsData !== undefined ? (
-        <div className="allSongsContainer">
-          {itemsData.map((item) => (
+      {songs !== undefined ? (
+        <div className="SongsListContainer">
+          {songs.map((item) => (
             <Item
               key={item._id}
               title={item.title}
@@ -38,4 +38,4 @@ const AllItems = ({ baseUrl }: AllItemsProps) => {
   );
 };
 
-export default AllItems;
+export default SongsList;

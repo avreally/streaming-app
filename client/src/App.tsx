@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { ItemType } from "../types";
 import SongsListContext from "./contexts/SongsListContext";
 import ListOfFavourites from "./components/ListOfFavourites/ListOfFavourites";
-import AllItems from "./components/AllItems/AllItems";
+import SongsList from "./components/SongsList/SongsList";
 
 const App = () => {
   const songsList = useState<ItemType[]>([]);
@@ -19,7 +19,7 @@ const App = () => {
               <Route path="favourites" element={<ListOfFavourites />} />
               <Route
                 path="all-music"
-                element={<AllItems baseUrl={baseUrl} />}
+                element={<SongsList baseUrl={baseUrl} />}
               />
             </Route>
           </Routes>

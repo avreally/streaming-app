@@ -1,12 +1,11 @@
-.allSongsWrapper {
+.SongsListWrapper {
   display: flex;
   flex-direction: column;
   gap: 2rem;
   align-items: center;
 }
 
-
-.allSongsContainer {
+.SongsListContainer {
   display: flex;
   flex-direction: column;
   gap: 2rem;
