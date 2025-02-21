@@ -1,28 +1,25 @@
-import * as mongoDB from "mongodb";
+import Item from "../models/item.js";
+import User from "../models/user.js";
 
-export const collections: {
-  items?: mongoDB.Collection;
-  users?: mongoDB.Collection;
+type Data = {
+  items: Item[];
+  users: User[];
+};
+
+const defaultData: Data = {
+  items: [],
+  users: [],
+};
+
+export const items: {
+  items?: Item[];
 } = {};
 
 export async function connectToDatabase() {
-  const client: mongoDB.MongoClient = new mongoDB.MongoClient(
-    "mongodb://localhost:27017"
-  );
+  const { JSONFilePreset } = await import("lowdb/node");
+  const db = await JSONFilePreset<Data>("db.json", defaultData);
 
-  await client.connect();
+  items.items = db.data.items;
 
-  const db: mongoDB.Db = client.db("streaming-app-db");
-
-  const itemsCollection: mongoDB.Collection = db.collection("items");
-
-  collections.items = itemsCollection;
-
-  const usersCollection: mongoDB.Collection = db.collection("users");
-
-  collections.users = usersCollection;
-
-  console.log(
-    `Successfully connected to database: ${db.databaseName} and collections: ${itemsCollection.collectionName}, ${usersCollection.collectionName}`
-  );
+  console.log(`Successfully connected to database`);
 }
