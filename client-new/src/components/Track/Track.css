@@ -1,0 +1,12 @@
+.track {
+  list-style-type: none;
+}
+
+.audio {
+  display: block;
+  background-color: #a293fa;
+}
+
+audio::-webkit-media-controls-panel {
+  background-color: #a293fa;
+}
