@@ -1,5 +1,5 @@
 import express from "express";
-import { items, connectToDatabase } from "./services/database.service.js";
+import { tracks, connectToDatabase } from "./services/database.service.js";
 import "dotenv/config";
 import User from "./models/user.js";
 import sessions from "express-session";
@@ -7,7 +7,7 @@ import cors from "cors";
 
 const app = express();
 
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
 
 app.use(express.json());
 
@@ -29,7 +29,7 @@ app.use(
     saveUninitialized: true,
     cookie: { maxAge: oneDay, sameSite: false },
     resave: false,
-  })
+  }),
 );
 
 // const findUserInMongoDB = async (filter: {}) => {
@@ -55,7 +55,7 @@ app.use(
 connectToDatabase()
   .then(() => {
     // removed because it overrides the route designed for search request
-    // app.use("/items", itemsRouter);
+    // app.use("/tracks", tracksRouter);
 
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
@@ -63,7 +63,7 @@ connectToDatabase()
 
     app.get("/login", (_req, res) => {
       res.redirect(
-        `https://github.com/login/oauth/authorize?client_id=${clientId}`
+        `https://github.com/login/oauth/authorize?client_id=${clientId}`,
       );
     });
 
@@ -104,7 +104,7 @@ connectToDatabase()
     //       session.userId = foundUser._id.toString();
     //       console.log("created session for new user", foundUser._id.toString());
 
-    //       res.redirect("http://localhost:3000/");
+    //       res.redirect("http://localhost:5173/");
     //       res.end();
     //     })
     //     .catch((err) => res.status(500).json({ message: err.message }));
@@ -128,18 +128,19 @@ connectToDatabase()
       req.session.destroy((err: any) => {
         console.log(err);
         res.clearCookie("connect.sid");
-        res.redirect("http://localhost:3000/");
+        res.redirect("http://localhost:5173/");
       });
       console.log("session id after logout", req.session);
     });
 
-    app.get("/items", async (req, res) => {
+    // TODO change path in client from /items to /tracks
+    app.get("/tracks", async (req, res) => {
       //const query = req.query.query; // req.query.query because query parameter is called "query" in the user search request
 
       //const search = query ? { title: new RegExp(query as string, "i") } : {}; // conditionally create mongo search
       // object based on request query
 
-      const songs = await items.items;
+      const songs = await tracks.tracks;
 
       // console.log("searching for", query);
       console.log("songs are", songs);

@@ -1,25 +1,25 @@
-import Item from "../models/item.js";
+import Track from "../models/track.js";
 import User from "../models/user.js";
 
 type Data = {
-  items: Item[];
+  tracks: Track[];
   users: User[];
 };
 
 const defaultData: Data = {
-  items: [],
+  tracks: [],
   users: [],
 };
 
-export const items: {
-  items?: Item[];
+export const tracks: {
+  tracks?: Track[];
 } = {};
 
 export async function connectToDatabase() {
   const { JSONFilePreset } = await import("lowdb/node");
   const db = await JSONFilePreset<Data>("db.json", defaultData);
 
-  items.items = db.data.items;
+  tracks.tracks = db.data.tracks;
 
   console.log(`Successfully connected to database`);
 }
