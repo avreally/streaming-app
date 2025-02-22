@@ -13,24 +13,24 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as SignInImport } from './routes/signIn'
+import { Route as SigninImport } from './routes/signin'
 import { Route as IndexImport } from './routes/index'
 
 // Create Virtual Routes
 
-const AllTracksLazyImport = createFileRoute('/allTracks')()
+const TracksLazyImport = createFileRoute('/tracks')()
 
 // Create/Update Routes
 
-const AllTracksLazyRoute = AllTracksLazyImport.update({
-  id: '/allTracks',
-  path: '/allTracks',
+const TracksLazyRoute = TracksLazyImport.update({
+  id: '/tracks',
+  path: '/tracks',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/allTracks.lazy').then((d) => d.Route))
+} as any).lazy(() => import('./routes/tracks.lazy').then((d) => d.Route))
 
-const SignInRoute = SignInImport.update({
-  id: '/signIn',
-  path: '/signIn',
+const SigninRoute = SigninImport.update({
+  id: '/signin',
+  path: '/signin',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -51,18 +51,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/signIn': {
-      id: '/signIn'
-      path: '/signIn'
-      fullPath: '/signIn'
-      preLoaderRoute: typeof SignInImport
+    '/signin': {
+      id: '/signin'
+      path: '/signin'
+      fullPath: '/signin'
+      preLoaderRoute: typeof SigninImport
       parentRoute: typeof rootRoute
     }
-    '/allTracks': {
-      id: '/allTracks'
-      path: '/allTracks'
-      fullPath: '/allTracks'
-      preLoaderRoute: typeof AllTracksLazyImport
+    '/tracks': {
+      id: '/tracks'
+      path: '/tracks'
+      fullPath: '/tracks'
+      preLoaderRoute: typeof TracksLazyImport
       parentRoute: typeof rootRoute
     }
   }
@@ -72,42 +72,42 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/signIn': typeof SignInRoute
-  '/allTracks': typeof AllTracksLazyRoute
+  '/signin': typeof SigninRoute
+  '/tracks': typeof TracksLazyRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/signIn': typeof SignInRoute
-  '/allTracks': typeof AllTracksLazyRoute
+  '/signin': typeof SigninRoute
+  '/tracks': typeof TracksLazyRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/signIn': typeof SignInRoute
-  '/allTracks': typeof AllTracksLazyRoute
+  '/signin': typeof SigninRoute
+  '/tracks': typeof TracksLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/signIn' | '/allTracks'
+  fullPaths: '/' | '/signin' | '/tracks'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/signIn' | '/allTracks'
-  id: '__root__' | '/' | '/signIn' | '/allTracks'
+  to: '/' | '/signin' | '/tracks'
+  id: '__root__' | '/' | '/signin' | '/tracks'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  SignInRoute: typeof SignInRoute
-  AllTracksLazyRoute: typeof AllTracksLazyRoute
+  SigninRoute: typeof SigninRoute
+  TracksLazyRoute: typeof TracksLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  SignInRoute: SignInRoute,
-  AllTracksLazyRoute: AllTracksLazyRoute,
+  SigninRoute: SigninRoute,
+  TracksLazyRoute: TracksLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -118,21 +118,21 @@ export const routeTree = rootRoute
 {
   "routes": {
     "__root__": {
-      "filePath": "__root.jsx",
+      "filePath": "__root.tsx",
       "children": [
         "/",
-        "/signIn",
-        "/allTracks"
+        "/signin",
+        "/tracks"
       ]
     },
     "/": {
-      "filePath": "index.jsx"
+      "filePath": "index.tsx"
     },
-    "/signIn": {
-      "filePath": "signIn.jsx"
+    "/signin": {
+      "filePath": "signin.tsx"
     },
-    "/allTracks": {
-      "filePath": "allTracks.lazy.jsx"
+    "/tracks": {
+      "filePath": "tracks.lazy.tsx"
     }
   }
 }

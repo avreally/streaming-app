@@ -1,12 +1,18 @@
-import "./AllTracks.css";
-import Track from "../Track/Track";
-import { useEffect, useState } from "react";
+import "../components/Tracks/Tracks.css";
+import Track from "../components/Track/Track";
+import { useState, useEffect } from "react";
+import { createLazyFileRoute } from "@tanstack/react-router";
+
 const baseUrl = "http://localhost:3001";
 
-const AllTracks = () => {
+export const Route = createLazyFileRoute("/tracks")({
+  component: Tracks,
+});
+
+function Tracks() {
   const [tracks, setTracks] = useState([]);
   async function fetchTracks() {
-    // setLoading(true);
+    // TODO setLoading(true);
 
     await fetch(`${baseUrl}/tracks`, {
       method: "GET",
@@ -29,6 +35,9 @@ const AllTracks = () => {
 
   return (
     <div className="all-tracks">
+      <div>
+        <button>Sign in with GitHub</button>
+      </div>
       <h2>All Tracks</h2>
       <ul className="tracks">
         {tracks !== undefined
@@ -45,6 +54,6 @@ const AllTracks = () => {
       </ul>
     </div>
   );
-};
+}
 
-export default AllTracks;
+export default Tracks;
