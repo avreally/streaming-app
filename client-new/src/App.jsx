@@ -11,7 +11,6 @@ const queryClient = new QueryClient();
 const App = () => {
   return (
     <StrictMode>
-      <h1>Streaming App</h1>
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
       </QueryClientProvider>
