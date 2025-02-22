@@ -9,10 +9,10 @@ function Index() {
     <div>
       <ul>
         <li>
-          <Link to="/tracks">Tracks</Link>
+          <Link to="/tracks">Listen to Music</Link>
         </li>
         <li>
-          <Link to="/signin">Sign In</Link>
+          <Link to="/signin">Sign In with GitHub</Link>
         </li>
       </ul>
     </div>

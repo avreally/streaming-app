@@ -7,7 +7,7 @@ type TrackProps = {
   artist: string;
 };
 
-const Track = ({ title, url, artist }: TrackProps) => {
+export const Track = ({ title, url, artist }: TrackProps) => {
   return (
     <li className="track">
       <h3>{title}</h3>
@@ -16,5 +16,3 @@ const Track = ({ title, url, artist }: TrackProps) => {
     </li>
   );
 };
-
-export default Track;
