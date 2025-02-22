@@ -9,7 +9,7 @@ export const Header = () => {
       <Link to="/">
         <h1>Streaming App</h1>
       </Link>
-      <Link to={`${baseUrl}/login`}>Sign In with GitHub</Link>
+      <Link to={`${baseUrl}/signin`}>Sign In with GitHub</Link>
     </div>
   );
 };

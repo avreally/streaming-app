@@ -13,7 +13,6 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as SigninImport } from './routes/signin'
 import { Route as IndexImport } from './routes/index'
 
 // Create Virtual Routes
@@ -27,12 +26,6 @@ const TracksLazyRoute = TracksLazyImport.update({
   path: '/tracks',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/tracks.lazy').then((d) => d.Route))
-
-const SigninRoute = SigninImport.update({
-  id: '/signin',
-  path: '/signin',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -51,13 +44,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/signin': {
-      id: '/signin'
-      path: '/signin'
-      fullPath: '/signin'
-      preLoaderRoute: typeof SigninImport
-      parentRoute: typeof rootRoute
-    }
     '/tracks': {
       id: '/tracks'
       path: '/tracks'
@@ -72,41 +58,36 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/signin': typeof SigninRoute
   '/tracks': typeof TracksLazyRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/signin': typeof SigninRoute
   '/tracks': typeof TracksLazyRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/signin': typeof SigninRoute
   '/tracks': typeof TracksLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/signin' | '/tracks'
+  fullPaths: '/' | '/tracks'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/signin' | '/tracks'
-  id: '__root__' | '/' | '/signin' | '/tracks'
+  to: '/' | '/tracks'
+  id: '__root__' | '/' | '/tracks'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  SigninRoute: typeof SigninRoute
   TracksLazyRoute: typeof TracksLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  SigninRoute: SigninRoute,
   TracksLazyRoute: TracksLazyRoute,
 }
 
@@ -121,15 +102,11 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/signin",
         "/tracks"
       ]
     },
     "/": {
       "filePath": "index.tsx"
-    },
-    "/signin": {
-      "filePath": "signin.tsx"
     },
     "/tracks": {
       "filePath": "tracks.lazy.tsx"
