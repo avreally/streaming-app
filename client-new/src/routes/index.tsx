@@ -7,14 +7,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <div>
-      <ul>
-        <li>
-          <Link to="/tracks">Listen to Music</Link>
-        </li>
-        <li>
-          <Link to="/signin">Sign In with GitHub</Link>
-        </li>
-      </ul>
+      <Link to="/tracks">Listen to Music</Link>
     </div>
   );
 }
