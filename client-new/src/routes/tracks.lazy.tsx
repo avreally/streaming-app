@@ -1,47 +1,32 @@
 import "../components/Tracks/Tracks.css";
-import Track from "../components/Track/Track";
-import { useState, useEffect } from "react";
+import { Track } from "../components/Track/Track";
+import { useQuery } from "@tanstack/react-query";
 import { createLazyFileRoute } from "@tanstack/react-router";
-
-const baseUrl = "http://localhost:3001";
+import { getTracks } from "./../api/getTracks";
 
 export const Route = createLazyFileRoute("/tracks")({
   component: Tracks,
 });
 
 function Tracks() {
-  const [tracks, setTracks] = useState([]);
-  async function fetchTracks() {
-    // TODO setLoading(true);
+  const { isLoading, data, error } = useQuery({
+    queryKey: ["tracks"],
+    queryFn: () => getTracks(),
+  });
 
-    await fetch(`${baseUrl}/tracks`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setTracks(data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+  // TODO improve loading state
+  if (isLoading) {
+    return <h2>Loading...</h2>;
   }
 
-  useEffect(() => {
-    fetchTracks();
-  }, []);
+  if (error) return "An error has occurred: " + error.message;
 
   return (
     <div className="all-tracks">
-      <div>
-        <button>Sign in with GitHub</button>
-      </div>
       <h2>All Tracks</h2>
       <ul className="tracks">
-        {tracks !== undefined
-          ? tracks.map((track) => (
+        {data !== undefined
+          ? data.map((track) => (
               <Track
                 key={track.id}
                 id={track.id}
@@ -55,5 +40,3 @@ function Tracks() {
     </div>
   );
 }
-
-export default Tracks;
