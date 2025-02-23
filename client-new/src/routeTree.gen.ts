@@ -8,24 +8,19 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
-
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as MeImport } from './routes/me'
 import { Route as IndexImport } from './routes/index'
-
-// Create Virtual Routes
-
-const TracksLazyImport = createFileRoute('/tracks')()
 
 // Create/Update Routes
 
-const TracksLazyRoute = TracksLazyImport.update({
-  id: '/tracks',
-  path: '/tracks',
+const MeRoute = MeImport.update({
+  id: '/me',
+  path: '/me',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/tracks.lazy').then((d) => d.Route))
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -44,11 +39,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/tracks': {
-      id: '/tracks'
-      path: '/tracks'
-      fullPath: '/tracks'
-      preLoaderRoute: typeof TracksLazyImport
+    '/me': {
+      id: '/me'
+      path: '/me'
+      fullPath: '/me'
+      preLoaderRoute: typeof MeImport
       parentRoute: typeof rootRoute
     }
   }
@@ -58,37 +53,37 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/tracks': typeof TracksLazyRoute
+  '/me': typeof MeRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/tracks': typeof TracksLazyRoute
+  '/me': typeof MeRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/tracks': typeof TracksLazyRoute
+  '/me': typeof MeRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/tracks'
+  fullPaths: '/' | '/me'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/tracks'
-  id: '__root__' | '/' | '/tracks'
+  to: '/' | '/me'
+  id: '__root__' | '/' | '/me'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  TracksLazyRoute: typeof TracksLazyRoute
+  MeRoute: typeof MeRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  TracksLazyRoute: TracksLazyRoute,
+  MeRoute: MeRoute,
 }
 
 export const routeTree = rootRoute
@@ -102,14 +97,14 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/tracks"
+        "/me"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/tracks": {
-      "filePath": "tracks.lazy.tsx"
+    "/me": {
+      "filePath": "me.tsx"
     }
   }
 }
