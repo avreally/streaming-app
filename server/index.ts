@@ -88,13 +88,13 @@ app.get("/oauth-callback", async (req, res) => {
 
 app.get("/me", async (req, res) => {
   if (!req.session.userId) {
-    res.status(401).json({ error: "User not authenticated" });
+    res.status(401).json(null);
     return;
   }
 
   const user = await findUserById(Number(req.session.userId));
   if (!user) {
-    res.status(404).json({ error: "User not found" });
+    res.status(404).json(null);
     return;
   }
   res.send(user);
