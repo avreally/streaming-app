@@ -18,6 +18,11 @@ export const User = () => {
 
   const { user, setUser } = useContext(UserContext);
 
+  const userName = user?.userName ? user.userName : "someone";
+  const avatarUrl = user?.avatarUrl
+    ? user.avatarUrl
+    : "https://picsum.photos/200";
+
   // TODO improve loading state
   if (isLoading) {
     return <h2>Loading...</h2>;
@@ -26,13 +31,9 @@ export const User = () => {
   if (error) return "An error has occurred: " + error.message;
 
   return (
-    <div>
-      {user !== undefined ? (
-        <div className="user">
-          <p>Hey {user.userName}!</p>
-          <img src={user.avatarUrl} alt="user-avatar" className="user-avatar" />
-        </div>
-      ) : null}
+    <div className="user">
+      <img src={avatarUrl} alt="user-avatar" className="user-avatar" />
+      <p>Hey {userName}!</p>
     </div>
   );
 };
