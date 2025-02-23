@@ -76,13 +76,28 @@ app.get("/oauth-callback", async (req, res) => {
     }
 
     const session = req.session;
-    session.userId = user.githubUserId.toString();
+    session.userId = String(user.githubUserId);
 
     res.redirect("http://localhost:5173/");
+    res.end();
   } catch (error) {
     res.status(500).json({ error: "Failed to authenticate" });
     res.redirect("http://localhost:5173/login?error=auth_failed");
   }
+});
+
+app.get("/me", async (req, res) => {
+  if (!req.session.userId) {
+    res.status(401).json({ error: "User not authenticated" });
+    return;
+  }
+
+  const user = await findUserById(Number(req.session.userId));
+  if (!user) {
+    res.status(404).json({ error: "User not found" });
+    return;
+  }
+  res.send(user);
 });
 
 app.get("/signout", (req, res) => {
@@ -99,9 +114,9 @@ app.get("/tracks", async (req, res) => {
   //const search = query ? { title: new RegExp(query as string, "i") } : {}; // conditionally create mongo search
   // object based on request query
 
-  const songs = getAllTracks();
+  const tracks = getAllTracks();
 
-  res.send(songs);
+  res.send(tracks);
 });
 
 connectToDatabase()
