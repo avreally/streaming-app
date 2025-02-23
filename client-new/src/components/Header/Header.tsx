@@ -8,23 +8,27 @@ const baseUrl = "http://localhost:3001";
 
 export const Header = () => {
   const { user } = useContext(UserContext);
-  const [buttonName, setButtonName] = useState("Sign In with GitHub");
+  const [buttonName, setButtonName] = useState("Sign in with GitHub");
   const [uri, setUri] = useState("/signin");
 
   useEffect(() => {
-    if (user !== undefined) {
+    if (user) {
       setButtonName("Sign Out");
       setUri("/signout");
     }
   }, [user]);
 
   return (
-    <nav className="header">
+    <nav className="nav">
+      <div className="wrapper">
+        <User />
+        <Link to={baseUrl + uri} className="button">
+          {buttonName}
+        </Link>
+      </div>
       <Link to="/">
-        <h1>Streaming App</h1>
+        <h1 className="header">Streaming App</h1>
       </Link>
-      <User />
-      <Link to={baseUrl + uri}>{buttonName}</Link>
     </nav>
   );
 };
