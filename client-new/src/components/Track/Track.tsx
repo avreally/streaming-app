@@ -10,9 +10,11 @@ type TrackProps = {
 export const Track = ({ title, url, artist }: TrackProps) => {
   return (
     <li className="track">
-      <h3>{title}</h3>
-      <p>{artist}</p>
       <audio className="audio" controls src={url}></audio>
+      <div className="track-info">
+        <h3 className="title">{title}</h3>
+        <p className="artist">{artist}</p>
+      </div>
     </li>
   );
 };
