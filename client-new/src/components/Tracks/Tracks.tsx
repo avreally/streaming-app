@@ -1,14 +1,9 @@
-import "../components/Tracks/Tracks.css";
-import { Track } from "../components/Track/Track";
+import "./Tracks.css";
+import { getTracks } from "../../api/getTracks";
 import { useQuery } from "@tanstack/react-query";
-import { createLazyFileRoute } from "@tanstack/react-router";
-import { getTracks } from "./../api/getTracks";
+import { Track } from "../Track/Track";
 
-export const Route = createLazyFileRoute("/tracks")({
-  component: Tracks,
-});
-
-function Tracks() {
+export const Tracks = () => {
   const { isLoading, data, error } = useQuery({
     queryKey: ["tracks"],
     queryFn: () => getTracks(),
@@ -39,4 +34,4 @@ function Tracks() {
       </ul>
     </div>
   );
-}
+};
