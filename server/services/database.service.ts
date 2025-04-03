@@ -1,28 +1,49 @@
-import * as mongoDB from "mongodb";
+import { Low } from "lowdb";
+import { Track } from "../types/track.js";
+import { User } from "../types/user.js";
 
-export const collections: {
-  items?: mongoDB.Collection;
-  users?: mongoDB.Collection;
-} = {};
+type Data = {
+  tracks: Track[];
+  users: User[];
+};
+
+const defaultData: Data = {
+  tracks: [],
+  users: [],
+};
+
+let db: Low<Data>;
 
 export async function connectToDatabase() {
-  const client: mongoDB.MongoClient = new mongoDB.MongoClient(
-    "mongodb://localhost:27017"
-  );
+  const { JSONFilePreset } = await import("lowdb/node");
+  db = await JSONFilePreset<Data>("db.json", defaultData);
 
-  await client.connect();
+  console.log(`Successfully connected to database`);
+}
 
-  const db: mongoDB.Db = client.db("streaming-app-db");
+export function getAllTracks() {
+  return db.data.tracks;
+}
 
-  const itemsCollection: mongoDB.Collection = db.collection("items");
+type GitHubUser = {
+  id: number;
+  login: string;
+  avatar_url: string;
+};
 
-  collections.items = itemsCollection;
+export async function createNewUser({ id, login, avatar_url }: GitHubUser) {
+  const user: User = {
+    githubUserId: id,
+    userName: login,
+    favouriteTrackIds: [],
+    avatarUrl: avatar_url,
+  };
 
-  const usersCollection: mongoDB.Collection = db.collection("users");
+  db.data.users.push(user);
+  await db.write();
+  return user;
+}
 
-  collections.users = usersCollection;
-
-  console.log(
-    `Successfully connected to database: ${db.databaseName} and collections: ${itemsCollection.collectionName}, ${usersCollection.collectionName}`
-  );
+export function findUserById(id: number) {
+  return db.data.users.find((user) => user.githubUserId === id);
 }

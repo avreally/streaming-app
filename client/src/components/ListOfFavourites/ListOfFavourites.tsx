@@ -1,14 +1,10 @@
 import "./ListOfFavourites.css";
 // import FavouriteItem from "../FavouriteItem/FavouriteItem";
 
-type ListOfFavouritesProps = {
-  className: string;
-};
-
-const ListOfFavourites = ({ className }: ListOfFavouritesProps) => {
+const ListOfFavourites = () => {
   return (
     <div>
-      <h2 className={className}>List of Favourites:</h2>
+      <h2>List of Favourites:</h2>
       {/*<FavouriteItem className={className} />*/}
     </div>
   );

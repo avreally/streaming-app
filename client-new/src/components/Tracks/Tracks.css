@@ -1,0 +1,11 @@
+.all-tracks {
+  background-color: rgb(14, 16, 65);
+  color: white;
+  padding: 2rem;
+}
+
+.tracks {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

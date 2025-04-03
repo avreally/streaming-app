@@ -6,6 +6,7 @@ type InputFieldProps = {
   type: string;
   placeholder: string;
   setSearchQuery: (p: string) => void;
+  value?: string;
 };
 
 const InputField = ({
@@ -13,6 +14,7 @@ const InputField = ({
   type,
   placeholder,
   setSearchQuery,
+  value,
 }: InputFieldProps) => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -23,6 +25,7 @@ const InputField = ({
       className={className}
       placeholder={placeholder}
       onChange={handleInputChange}
+      value={value}
     />
   );
 };

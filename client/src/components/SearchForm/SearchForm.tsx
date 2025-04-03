@@ -13,12 +13,9 @@ type SearchFormProps = {
 
 const SearchForm = ({ className, onSubmit, placeholder }: SearchFormProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [songData, setSongData] = useState();
   const [searchQuery, setSearchQuery] = useState(
     searchParams.get("query") ?? ""
   );
-
-  const baseUrl = "http://localhost:3001/items";
 
   // Putting user request to URL
   const updateSearchParams = (query: string) => {
@@ -32,7 +29,6 @@ const SearchForm = ({ className, onSubmit, placeholder }: SearchFormProps) => {
 
   const searchForSong = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("submitted");
     updateSearchParams(searchQuery);
     onSubmit(searchQuery); // call onSubmit function that is passed in props from the parent component
   };
@@ -45,6 +41,7 @@ const SearchForm = ({ className, onSubmit, placeholder }: SearchFormProps) => {
           placeholder={placeholder}
           type="search"
           setSearchQuery={setSearchQuery}
+          value={searchQuery}
         />
         <Button buttonName="Search" className="button searchButton" />
       </div>

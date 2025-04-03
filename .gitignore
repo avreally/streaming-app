@@ -1,1 +1,4 @@
 .idea
+node_modules
+notes.txt
+# routeTree.gen.ts

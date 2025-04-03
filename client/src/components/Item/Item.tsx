@@ -2,14 +2,14 @@ import "./Item.css";
 import Button from "../Button/Button";
 
 type ItemProps = {
-  className: string;
+  // className: string;
   key: string;
   title: string;
   url: string;
   artist: string;
 };
 
-const Item = ({ className, title, url, artist }: ItemProps) => {
+const Item = ({ title, url, artist }: ItemProps) => {
   return (
     <div className="itemCard">
       <div>{title}</div>
