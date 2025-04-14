@@ -1,6 +1,6 @@
 import { IconProps } from "./types";
 
-function IconPlus({ className, color = "currentColor" }: IconProps) {
+export const IconPlus = ({ className, color = "currentColor" }: IconProps) => {
   return (
     <svg
       className={className}
@@ -13,6 +13,4 @@ function IconPlus({ className, color = "currentColor" }: IconProps) {
       />
     </svg>
   );
-}
-
-export default IconPlus;
+};

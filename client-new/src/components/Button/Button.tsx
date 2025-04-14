@@ -11,7 +11,7 @@ type ButtonProps = {
   disabled?: boolean;
 };
 
-function Button({
+export const Button = ({
   onClick,
   variant = "secondary",
   size,
@@ -19,7 +19,7 @@ function Button({
   disabled,
   className,
   children,
-}: PropsWithChildren<ButtonProps>) {
+}: PropsWithChildren<ButtonProps>) => {
   return (
     <button
       className={clsx(styles.button, className, {
@@ -36,6 +36,4 @@ function Button({
       {children}
     </button>
   );
-}
-
-export default Button;
+};
