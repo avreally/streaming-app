@@ -1,27 +1,31 @@
-import "./Tracks.css";
 import { getTracks } from "../../api/getTracks";
 import { useQuery } from "@tanstack/react-query";
 import { Track } from "../Track/Track";
+import { TrackType } from "../../types/types";
+import { Loader } from "../Loader/Loader";
+import styles from "./Tracks.module.css";
 
 export const Tracks = () => {
-  const { isLoading, data, error } = useQuery({
+  const {
+    isLoading,
+    data: tracks,
+    error,
+  } = useQuery({
     queryKey: ["tracks"],
     queryFn: () => getTracks(),
   });
 
-  // TODO improve loading state
   if (isLoading) {
-    return <h2>Loading...</h2>;
+    return <Loader />;
   }
 
   if (error) return "An error has occurred: " + error.message;
 
   return (
-    <div className="all-tracks">
-      <h2>All Tracks</h2>
-      <ul className="tracks">
-        {data !== undefined
-          ? data.map((track) => (
+    <div className={styles.wrapper}>
+      <ul className={styles.tracks}>
+        {tracks !== undefined
+          ? tracks.map((track: TrackType) => (
               <Track
                 key={track.id}
                 id={track.id}
