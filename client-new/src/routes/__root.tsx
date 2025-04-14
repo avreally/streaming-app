@@ -11,6 +11,16 @@ const Root = () => {
     <>
       <UserContext value={{ user, setUser }}>
         <Header />
+        <nav>
+          <ul className="menu">
+            <li>
+              <Link to="/">Tracks</Link>
+            </li>
+            <li>
+              <Link to="/playlists">Playlists</Link>
+            </li>
+          </ul>
+        </nav>
         <Outlet />
       </UserContext>
       <TanStackRouterDevtools />

@@ -11,10 +11,17 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as PlaylistsImport } from './routes/playlists'
 import { Route as MeImport } from './routes/me'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
+
+const PlaylistsRoute = PlaylistsImport.update({
+  id: '/playlists',
+  path: '/playlists',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const MeRoute = MeImport.update({
   id: '/me',
@@ -46,6 +53,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MeImport
       parentRoute: typeof rootRoute
     }
+    '/playlists': {
+      id: '/playlists'
+      path: '/playlists'
+      fullPath: '/playlists'
+      preLoaderRoute: typeof PlaylistsImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -54,36 +68,41 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/me': typeof MeRoute
+  '/playlists': typeof PlaylistsRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/me': typeof MeRoute
+  '/playlists': typeof PlaylistsRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/me': typeof MeRoute
+  '/playlists': typeof PlaylistsRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/me'
+  fullPaths: '/' | '/me' | '/playlists'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/me'
-  id: '__root__' | '/' | '/me'
+  to: '/' | '/me' | '/playlists'
+  id: '__root__' | '/' | '/me' | '/playlists'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   MeRoute: typeof MeRoute
+  PlaylistsRoute: typeof PlaylistsRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   MeRoute: MeRoute,
+  PlaylistsRoute: PlaylistsRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,7 +116,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/me"
+        "/me",
+        "/playlists"
       ]
     },
     "/": {
@@ -105,6 +125,9 @@ export const routeTree = rootRoute
     },
     "/me": {
       "filePath": "me.tsx"
+    },
+    "/playlists": {
+      "filePath": "playlists.tsx"
     }
   }
 }
