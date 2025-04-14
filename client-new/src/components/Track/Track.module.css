@@ -16,7 +16,7 @@ audio::-webkit-media-controls-panel {
   gap: 2rem;
 }
 
-.track-info {
+.info {
   display: flex;
   flex-direction: column;
   text-align: left;
