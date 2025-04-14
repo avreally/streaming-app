@@ -1,4 +1,4 @@
-.nav {
+.header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -15,7 +15,7 @@
   align-items: flex-start;
 }
 
-.button {
+.signInbutton {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6rem 1.2rem;
@@ -27,10 +27,10 @@
   cursor: pointer;
   transition: border-color 0.25s;
 }
-.button:hover {
+.signInbutton:hover {
   border-color: #646cff;
 }
-.button:focus,
-.button:focus-visible {
+.signInbutton:focus,
+.signInbutton:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }

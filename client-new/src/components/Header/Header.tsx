@@ -19,16 +19,16 @@ export const Header = () => {
   }, [user]);
 
   return (
-    <nav className="nav">
+    <div className="header">
       <div className="wrapper">
         <User />
-        <Link to={baseUrl + uri} className="button">
+        <Link to={baseUrl + uri} className="signInbutton">
           {buttonName}
         </Link>
       </div>
       <Link to="/">
-        <h1 className="header">Streaming App</h1>
+        <h1>Streaming App</h1>
       </Link>
-    </nav>
+    </div>
   );
 };
