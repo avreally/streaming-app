@@ -119,6 +119,22 @@ app.get("/tracks", async (req, res) => {
   res.send(tracks);
 });
 
+app.get("/playlists", async (req, res) => {
+  if (!req.session.userId) {
+    res.status(401).json(null);
+    return;
+  }
+
+  const user = await findUserById(Number(req.session.userId));
+  if (!user) {
+    res.status(404).json(null);
+    return;
+  }
+
+  const playlists = user["playlists"];
+  res.send(playlists);
+});
+
 connectToDatabase()
   .then(() => {
     app.listen(PORT, () => {
