@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getUser } from "../../api/getUser";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../../contexts";
+import { Loader } from "../Loader/Loader";
 
 export const User = () => {
   const { isLoading, data, error } = useQuery({
@@ -23,9 +24,8 @@ export const User = () => {
     ? user.avatarUrl
     : "https://picsum.photos/200";
 
-  // TODO improve loading state
   if (isLoading) {
-    return <h2>Loading...</h2>;
+    return <Loader />;
   }
 
   if (error) return "An error has occurred: " + error.message;
