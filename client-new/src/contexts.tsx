@@ -3,6 +3,7 @@ import { createContext } from "react";
 export type User = {
   userName: string;
   avatarUrl: string;
+  githubUserId: number;
 };
 
 type UserContextType = {
