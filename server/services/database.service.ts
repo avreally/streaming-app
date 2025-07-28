@@ -1,6 +1,7 @@
 import { Low } from "lowdb";
 import { Track } from "../types/track.js";
 import { User } from "../types/user.js";
+import { Playlist } from "../types/playlist.js";
 
 type Data = {
   tracks: Track[];
@@ -37,6 +38,7 @@ export async function createNewUser({ id, login, avatar_url }: GitHubUser) {
     userName: login,
     favouriteTrackIds: [],
     avatarUrl: avatar_url,
+    playlists: [],
   };
 
   db.data.users.push(user);
@@ -46,4 +48,22 @@ export async function createNewUser({ id, login, avatar_url }: GitHubUser) {
 
 export function findUserById(id: number) {
   return db.data.users.find((user) => user.githubUserId === id);
+}
+
+export async function createNewPlaylist(
+  { playlistId, title }: Playlist,
+  userId: number,
+) {
+  const playlist: Playlist = {
+    playlistId: playlistId,
+    title: title,
+    playlistTracks: [],
+  };
+
+  const foundUser = findUserById(userId);
+
+  if (foundUser) {
+    foundUser["playlists"].push(playlist);
+  }
+  await db.write();
 }

@@ -1,0 +1,109 @@
+.wrapper {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  gap: 1.5rem;
+  height: 4rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid hsl(230, 79%, 75%);
+  transition: border-color 200ms;
+}
+
+.createButton {
+  width: 60%;
+  max-width: 16rem;
+  height: 100%;
+  border: 2px solid hsl(230, 84%, 60%);
+  transition: background-color 200ms;
+}
+
+.createButton:hover {
+  background-color: hsl(231, 54%, 18%);
+}
+
+.form {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  width: 100%;
+  height: 100%;
+}
+
+.input {
+  background-color: hsl(231, 54%, 18%);
+  color: white;
+  border: none;
+  padding: 0.75rem 1rem;
+  text-align: center;
+  width: 60%;
+  max-width: 16rem;
+  height: 100%;
+  border: 2px solid hsl(230, 84%, 60%);
+}
+
+.input:focus:focus-visible {
+  outline: none;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  height: 100%;
+}
+
+.cancelButton {
+  max-width: 3rem;
+  height: 100%;
+  max-height: 3rem;
+}
+
+.cancelButtonImage {
+  width: 100%;
+  height: 100%;
+  transform: rotate(45deg);
+}
+
+.submitButton {
+  width: auto;
+  height: 100%;
+}
+
+.visible {
+  display: flex;
+}
+
+.visible > .buttons {
+  animation: fadeIn 250ms ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.invisible {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .createButton {
+    width: 16rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .wrapper {
+    height: 4.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .input {
+    width: 16rem;
+  }
+}

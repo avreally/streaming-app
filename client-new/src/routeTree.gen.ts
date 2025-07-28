@@ -11,17 +11,12 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as PlaylistsImport } from './routes/playlists'
 import { Route as MeImport } from './routes/me'
 import { Route as IndexImport } from './routes/index'
+import { Route as PlaylistsIndexImport } from './routes/playlists.index'
+import { Route as PlaylistsPlaylistIdImport } from './routes/playlists.$playlistId'
 
 // Create/Update Routes
-
-const PlaylistsRoute = PlaylistsImport.update({
-  id: '/playlists',
-  path: '/playlists',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const MeRoute = MeImport.update({
   id: '/me',
@@ -32,6 +27,18 @@ const MeRoute = MeImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PlaylistsIndexRoute = PlaylistsIndexImport.update({
+  id: '/playlists/',
+  path: '/playlists/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PlaylistsPlaylistIdRoute = PlaylistsPlaylistIdImport.update({
+  id: '/playlists/$playlistId',
+  path: '/playlists/$playlistId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -53,11 +60,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MeImport
       parentRoute: typeof rootRoute
     }
-    '/playlists': {
-      id: '/playlists'
+    '/playlists/$playlistId': {
+      id: '/playlists/$playlistId'
+      path: '/playlists/$playlistId'
+      fullPath: '/playlists/$playlistId'
+      preLoaderRoute: typeof PlaylistsPlaylistIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/playlists/': {
+      id: '/playlists/'
       path: '/playlists'
       fullPath: '/playlists'
-      preLoaderRoute: typeof PlaylistsImport
+      preLoaderRoute: typeof PlaylistsIndexImport
       parentRoute: typeof rootRoute
     }
   }
@@ -68,41 +82,46 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/me': typeof MeRoute
-  '/playlists': typeof PlaylistsRoute
+  '/playlists/$playlistId': typeof PlaylistsPlaylistIdRoute
+  '/playlists': typeof PlaylistsIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/me': typeof MeRoute
-  '/playlists': typeof PlaylistsRoute
+  '/playlists/$playlistId': typeof PlaylistsPlaylistIdRoute
+  '/playlists': typeof PlaylistsIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/me': typeof MeRoute
-  '/playlists': typeof PlaylistsRoute
+  '/playlists/$playlistId': typeof PlaylistsPlaylistIdRoute
+  '/playlists/': typeof PlaylistsIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/me' | '/playlists'
+  fullPaths: '/' | '/me' | '/playlists/$playlistId' | '/playlists'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/me' | '/playlists'
-  id: '__root__' | '/' | '/me' | '/playlists'
+  to: '/' | '/me' | '/playlists/$playlistId' | '/playlists'
+  id: '__root__' | '/' | '/me' | '/playlists/$playlistId' | '/playlists/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   MeRoute: typeof MeRoute
-  PlaylistsRoute: typeof PlaylistsRoute
+  PlaylistsPlaylistIdRoute: typeof PlaylistsPlaylistIdRoute
+  PlaylistsIndexRoute: typeof PlaylistsIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   MeRoute: MeRoute,
-  PlaylistsRoute: PlaylistsRoute,
+  PlaylistsPlaylistIdRoute: PlaylistsPlaylistIdRoute,
+  PlaylistsIndexRoute: PlaylistsIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -117,7 +136,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/me",
-        "/playlists"
+        "/playlists/$playlistId",
+        "/playlists/"
       ]
     },
     "/": {
@@ -126,8 +146,11 @@ export const routeTree = rootRoute
     "/me": {
       "filePath": "me.tsx"
     },
-    "/playlists": {
-      "filePath": "playlists.tsx"
+    "/playlists/$playlistId": {
+      "filePath": "playlists.$playlistId.tsx"
+    },
+    "/playlists/": {
+      "filePath": "playlists.index.tsx"
     }
   }
 }

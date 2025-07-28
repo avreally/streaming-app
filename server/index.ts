@@ -135,6 +135,31 @@ app.get("/playlists", async (req, res) => {
   res.send(playlists);
 });
 
+app.post("/playlists", async (req, res) => {
+  if (!req.session.userId) {
+    console.log("error 401");
+
+    res.status(401).json(null);
+    return;
+  }
+
+  const user = await findUserById(Number(req.session.userId));
+  if (!user) {
+    res.status(404).json(null);
+    console.log("error 404");
+
+    return;
+  }
+
+  const newPlaylist = req.body.playlistData;
+  console.log(req.body.playlistData);
+
+  const playlists = user["playlists"];
+
+  playlists.unshift(newPlaylist);
+  res.send(playlists);
+});
+
 connectToDatabase()
   .then(() => {
     app.listen(PORT, () => {
