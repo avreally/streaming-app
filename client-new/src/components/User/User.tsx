@@ -19,7 +19,7 @@ export const User = () => {
 
   const { user, setUser } = useContext(UserContext);
 
-  const userName = user?.userName ? user.userName : "someone";
+  const userName = user?.userName ? user.userName : "sign in";
   const avatarUrl = user?.avatarUrl
     ? user.avatarUrl
     : "https://picsum.photos/200";
@@ -33,7 +33,7 @@ export const User = () => {
   return (
     <div className="user">
       <img src={avatarUrl} alt="user-avatar" className="user-avatar" />
-      <p>Hey {userName}!</p>
+      <p>Hey, {userName}!</p>
     </div>
   );
 };
