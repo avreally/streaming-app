@@ -1,41 +1,60 @@
 {
   "tracks": [
     {
-      "id": 1,
+      "id": "1",
       "title": "80s Retrowave",
       "url": "https://music.detr.dev/80s-retrowave-15134.mp3",
       "artist": "Evgeny_Bardyuzha"
     },
     {
-      "id": 2,
+      "id": "2",
       "title": "Cyberpunk 2099",
       "url": "https://music.detr.dev/cyberpunk-2099-10701.mp3",
       "artist": "AleXZavesa"
     },
     {
-      "id": 3,
+      "id": "3",
       "title": "Electronic Rock (King Around Here)",
       "url": "https://music.detr.dev/electronic-rock-king-around-here-15045.mp3",
       "artist": "AlexGrohl"
     },
     {
-      "id": 4,
+      "id": "4",
       "title": "Mezhdunami - Flashes",
       "url": "https://music.detr.dev/mezhdunami-flashes-95436.mp3",
       "artist": "Mezhdunami"
     },
     {
-      "id": 5,
+      "id": "5",
       "title": "Right On Target",
       "url": "https://music.detr.dev/right-on-target-15699.mp3",
       "artist": "lemonmusicstudio"
     },
     {
-      "id": 6,
+      "id": "6",
       "title": "Slow Trap",
       "url": "https://music.detr.dev/slow-trap-18565.mp3",
       "artist": "Anton_Vlasov"
     }
   ],
-  "users": []
+  "users": [
+    {
+      "githubUserId": 64790900,
+      "userName": "avreally",
+      "favouriteTrackIds": [],
+      "avatarUrl": "https://avatars.githubusercontent.com/u/64790900?v=4",
+      "playlists": [
+        {
+          "playlistId": "11",
+          "title": "Favourites",
+          "playlistTracks": ["4", "6"]
+        },
+        {
+          "playlistId": "12",
+          "title": "Old Hits",
+          "playlistTracks": ["2", "5"]
+        }
+      ]
+    }
+  ]
 }
