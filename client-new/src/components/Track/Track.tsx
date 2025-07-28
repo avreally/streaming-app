@@ -1,7 +1,7 @@
 import styles from "./Track.module.css";
 
 type TrackProps = {
-  id: number;
+  id: string;
   title: string;
   url: string;
   artist: string;

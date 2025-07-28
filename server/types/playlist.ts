@@ -1,4 +1,5 @@
 export type Playlist = {
-  playlistId: number;
+  playlistId: string;
   title: string;
+  playlistTracks: string[];
 };

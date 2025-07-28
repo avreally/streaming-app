@@ -1,13 +1,14 @@
 export type TrackType = {
-  id: number;
+  id: string;
   title: string;
   url: string;
   artist: string;
 };
 
 export type PlaylistType = {
-  playlistId: number;
+  playlistId: string;
   title: string;
+  playlistTracks: string[];
 };
 
 export type PlaylistsType = {
