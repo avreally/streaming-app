@@ -1,0 +1,95 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: hsla(0, 0%, 0%, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.visible {
+  animation: fadeIn 250ms ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: hsl(240, 3%, 6%);
+  color: white;
+  padding: 1rem;
+  width: 80vw;
+  max-width: 20rem;
+  text-align: center;
+  border: 1px solid hsl(0, 100%, 20%);
+  box-shadow: 0 0 2rem 1.5rem hsla(0, 0%, 0%, 0.65);
+}
+
+.shown {
+  animation: slideUp 250ms ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(3rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal h3,
+p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.button {
+  width: 6.5rem;
+}
+
+@media (min-width: 768px) {
+  .modal {
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .modal {
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 24rem;
+  }
+
+  .buttons {
+    width: 100%;
+  }
+
+  .button {
+    width: 7rem;
+  }
+}
