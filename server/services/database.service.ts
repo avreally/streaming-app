@@ -51,19 +51,32 @@ export function findUserById(id: number) {
 }
 
 export async function createNewPlaylist(
-  { playlistId, title }: Playlist,
+  { playlistId, title, playlistTracks }: Playlist,
   userId: number,
 ) {
   const playlist: Playlist = {
     playlistId: playlistId,
     title: title,
-    playlistTracks: [],
+    playlistTracks: playlistTracks,
   };
 
   const foundUser = findUserById(userId);
 
   if (foundUser) {
-    foundUser["playlists"].push(playlist);
+    foundUser["playlists"].unshift(playlist);
   }
+  await db.write();
+  return playlist;
+}
+
+export async function deletePlaylist(playlistId: string, userId: number) {
+  const foundUser = findUserById(userId);
+
+  if (foundUser) {
+    foundUser["playlists"] = foundUser["playlists"].filter((playlist) => {
+      return playlist.playlistId !== playlistId;
+    });
+  }
+
   await db.write();
 }

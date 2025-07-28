@@ -8,7 +8,10 @@ import {
   createNewUser,
   getAllTracks,
   findUserById,
+  createNewPlaylist,
+  deletePlaylist,
 } from "./services/database.service.js";
+import { Playlist } from "./types/playlist.js";
 
 dotenv.config();
 const app = express();
@@ -137,27 +140,25 @@ app.get("/playlists", async (req, res) => {
 
 app.post("/playlists", async (req, res) => {
   if (!req.session.userId) {
-    console.log("error 401");
-
     res.status(401).json(null);
     return;
   }
 
-  const user = await findUserById(Number(req.session.userId));
-  if (!user) {
-    res.status(404).json(null);
-    console.log("error 404");
+  const { playlistId, title, playlistTracks }: Playlist = req.body.playlistData;
 
-    return;
-  }
+  const playlist = createNewPlaylist(
+    { playlistId, title, playlistTracks },
+    Number(req.session.userId),
+  );
 
-  const newPlaylist = req.body.playlistData;
-  console.log(req.body.playlistData);
+  res.send(playlist);
+});
 
-  const playlists = user["playlists"];
+app.delete("/playlists/:id", async (req, res) => {
+  const id = req.params.id;
 
-  playlists.unshift(newPlaylist);
-  res.send(playlists);
+  deletePlaylist(id, Number(req.session.userId));
+  res.status(204).end();
 });
 
 connectToDatabase()
