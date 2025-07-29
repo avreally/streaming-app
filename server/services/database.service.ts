@@ -1,4 +1,5 @@
 import { Low } from "lowdb";
+import { resolve } from "node:path";
 import { Track } from "../types/track.js";
 import { User } from "../types/user.js";
 import { Playlist } from "../types/playlist.js";
@@ -17,7 +18,10 @@ let db: Low<Data>;
 
 export async function connectToDatabase() {
   const { JSONFilePreset } = await import("lowdb/node");
-  db = await JSONFilePreset<Data>("db.json", defaultData);
+  db = await JSONFilePreset<Data>(
+    resolve(import.meta.dirname, "..", "db.json"),
+    defaultData,
+  );
 
   console.log(`Successfully connected to database`);
 }
