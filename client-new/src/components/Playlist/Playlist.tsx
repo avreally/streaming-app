@@ -6,10 +6,10 @@ import { useNavigate } from "@tanstack/react-router";
 import { Button } from "../Button/Button";
 import { useState } from "react";
 import Modal from "../Modal/Modal";
-import styles from "./Playlist.module.css";
-import { PlaylistType, TrackType } from "../../types/types";
+import { TrackType } from "../../types/types";
 import { getTracks } from "../../api/getTracks";
 import { deletePlaylist } from "../../api/deletePlaylist";
+import styles from "./Playlist.module.css";
 
 type PlaylistProps = {
   playlistId: string;
@@ -20,6 +20,7 @@ export const Playlist = ({ playlistId }: PlaylistProps) => {
     isLoading,
     data: playlists,
     error,
+    isSuccess,
   } = useQuery({
     queryKey: ["playlists"],
     queryFn: () => getPlaylists(),
@@ -37,7 +38,11 @@ export const Playlist = ({ playlistId }: PlaylistProps) => {
     return <Loader />;
   }
 
-  const playlist: PlaylistType = playlists?.find((playlist: PlaylistType) => {
+  if (!isSuccess) {
+    return null;
+  }
+
+  const playlist = playlists.find((playlist) => {
     return playlist.playlistId === playlistId;
   });
 
