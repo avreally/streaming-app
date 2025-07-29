@@ -6,7 +6,7 @@ import tseslint from "typescript-eslint";
 import prettier from "eslint-config-prettier";
 import pluginQuery from "@tanstack/eslint-plugin-query";
 
-export default tseslint.config(
+const customConfig = tseslint.config(
   { ignores: ["dist"] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
@@ -15,7 +15,6 @@ export default tseslint.config(
       ecmaVersion: 2020,
       globals: globals.browser,
     },
-    ...pluginQuery.configs["flat/recommended"],
     plugins: {
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
@@ -30,3 +29,5 @@ export default tseslint.config(
   },
   prettier,
 );
+
+export default [...customConfig, ...pluginQuery.configs["flat/recommended"]];
