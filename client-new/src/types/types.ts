@@ -14,3 +14,11 @@ export type PlaylistType = {
 export type PlaylistsType = {
   playlists: PlaylistType[];
 };
+
+export type User = {
+  githubUserId: number;
+  userName: string;
+  favouriteTrackIds: number[];
+  avatarUrl: string;
+  playlists: PlaylistType[];
+};
