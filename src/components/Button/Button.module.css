@@ -63,7 +63,9 @@
 
 .danger {
   border: 1px solid hsl(233, 42%, 37%);
-  transition: border 200ms, background-color 200ms;
+  transition:
+    border 200ms,
+    background-color 200ms;
 }
 
 .danger:hover {

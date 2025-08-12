@@ -6,7 +6,7 @@
   gap: 1rem;
   align-self: flex-start;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #646cff;
+  border-bottom: 1px solid hsl(237, 100%, 70%);
 }
 
 .user-avatar {
