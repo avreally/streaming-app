@@ -2,8 +2,14 @@
   list-style-type: none;
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
+  gap: 2rem;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
   gap: 2rem;
 }
 
@@ -20,4 +26,17 @@
 
 .artist {
   margin: 0;
+}
+
+.container {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  text-align: left;
+}
+
+.checkmark {
+  height: 1.5rem;
+  flex-shrink: 0;
+  padding: 0.25rem;
 }
