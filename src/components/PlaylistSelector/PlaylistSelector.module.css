@@ -1,0 +1,62 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  max-height: 50vh;
+}
+
+.title {
+  align-self: flex-start;
+  font-size: 1.125rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-bottom: 1px solid hsl(230, 50%, 26%);
+  width: 100%;
+  text-align: left;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.button {
+  width: 6.5rem;
+}
+
+.selector {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+  background-color: transparent;
+  color: inherit;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+.option {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  width: 100%;
+}
+
+.option:hover {
+  background-color: hsl(230, 50%, 26%);
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.playlistTitle {
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.empty {
+  padding: 1.5rem 1rem 0 1rem;
+  text-align: left;
+}

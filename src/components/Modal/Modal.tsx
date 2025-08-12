@@ -1,42 +1,50 @@
-import { Button } from "../Button/Button";
 import clsx from "clsx";
+import { PropsWithChildren, useCallback, useEffect } from "react";
 import styles from "./Modal.module.css";
 
 type ModalProps = {
-  itemType: "track" | "playlist";
-  itemName: string;
-  onConfirm: () => void;
-  onCancel: () => void;
   isShown: boolean;
+  onCancel: () => void;
+  variant?: "danger" | "playlist-selector";
 };
 
 function Modal({
-  itemType,
-  itemName,
-  onConfirm,
-  onCancel,
   isShown,
-}: ModalProps) {
+  onCancel,
+  variant,
+  children,
+}: PropsWithChildren<ModalProps>) {
+  const handleKeyUp = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onCancel();
+      }
+    },
+    [onCancel],
+  );
+
+  useEffect(() => {
+    document.addEventListener("keyup", handleKeyUp);
+
+    return () => {
+      document.removeEventListener("keyup", handleKeyUp);
+    };
+  }, [handleKeyUp]);
+
   return (
-    <div
-      className={clsx(styles.overlay, { [styles.visible]: isShown })}
-      data-testid="delete-modal"
-    >
-      <div className={clsx(styles.modal, { [styles.shown]: isShown })}>
-        <h3>Delete {itemType}</h3>
-        <p>Are you sure you want to delete &quot;{itemName}&quot;?</p>
-        <div className={styles.buttons}>
-          <Button className={styles.button} onClick={onCancel}>
-            Cancel
-          </Button>
-          <Button
-            className={styles.button}
-            onClick={onConfirm}
-            variant="danger"
-          >
-            Delete
-          </Button>
-        </div>
+    <div className={styles.wrapper}>
+      <div
+        className={clsx(styles.overlay, { [styles.visible]: isShown })}
+        onClick={onCancel}
+      ></div>
+      <div
+        className={clsx(styles.modal, {
+          [styles.shown]: isShown,
+          [styles.danger]: variant === "danger",
+          [styles.selector]: variant === "playlist-selector",
+        })}
+      >
+        {children}
       </div>
     </div>
   );
