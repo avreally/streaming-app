@@ -4,7 +4,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Header } from "../components/Header/Header";
 import { User, UserContext } from "../contexts";
 import { useState } from "react";
-import { AudioPlayer } from "../components/AudioPlayer/AudioPlayer";
+// import { AudioPlayer } from "../components/AudioPlayer/AudioPlayer";
 
 const Root = () => {
   const [user, setUser] = useState<User | undefined>(undefined);
@@ -23,7 +23,7 @@ const Root = () => {
           </ul>
         </nav>
         <Outlet />
-        <AudioPlayer />
+        {/* <AudioPlayer /> */}
       </UserContext>
       <TanStackRouterDevtools />
       <ReactQueryDevtools />
