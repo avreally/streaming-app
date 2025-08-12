@@ -9,6 +9,7 @@ import Modal from "../Modal/Modal";
 import { TrackType } from "../../types/types";
 import { getTracks } from "../../api/getTracks";
 import { deletePlaylist } from "../../api/deletePlaylist";
+import DeleteConfirmation from "../DeleteConfirmation/DeleteConfirmation";
 import styles from "./Playlist.module.css";
 
 type PlaylistProps = {
@@ -17,16 +18,21 @@ type PlaylistProps = {
 
 export const Playlist = ({ playlistId }: PlaylistProps) => {
   const {
-    isLoading,
+    isLoading: isLoadingPlaylists,
     data: playlists,
-    error,
-    isSuccess,
+    error: playlistsError,
+    isSuccess: isSuccessPlaylists,
   } = useQuery({
     queryKey: ["playlists"],
     queryFn: () => getPlaylists(),
   });
 
-  const { data: tracks } = useQuery({
+  const {
+    isLoading: isLoadingTracks,
+    data: tracks,
+    error: tracksError,
+    isSuccess: isSuccessTracks,
+  } = useQuery({
     queryKey: ["tracks"],
     queryFn: () => getTracks(),
   });
@@ -34,11 +40,11 @@ export const Playlist = ({ playlistId }: PlaylistProps) => {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
-  if (isLoading) {
+  if (isLoadingPlaylists || isLoadingTracks) {
     return <Loader />;
   }
 
-  if (!isSuccess) {
+  if (!isSuccessPlaylists && !isSuccessTracks) {
     return null;
   }
 
@@ -93,7 +99,7 @@ export const Playlist = ({ playlistId }: PlaylistProps) => {
         {playlistTrackIds.length === 0 ? (
           <div>No tracks here yet 🎧</div>
         ) : null}
-        {isLoading ? (
+        {isLoadingPlaylists || isLoadingTracks ? (
           <Loader />
         ) : playlistTracks !== undefined ? (
           playlistTracks.map((track: TrackType) => (
@@ -109,12 +115,17 @@ export const Playlist = ({ playlistId }: PlaylistProps) => {
       </div>
       {showModal && (
         <Modal
-          itemType="playlist"
-          itemName={playlist.title}
-          onConfirm={handleDelete}
-          onCancel={() => setShowModal(false)}
           isShown={showModal}
-        />
+          variant="danger"
+          onCancel={() => setShowModal(false)}
+        >
+          <DeleteConfirmation
+            itemType="playlist"
+            itemName={playlist.title}
+            onConfirm={handleDelete}
+            onCancel={() => setShowModal(false)}
+          />
+        </Modal>
       )}
     </div>
   );
