@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { NewPlaylist } from "../NewPlaylist/NewPlaylist";
 import { getPlaylists } from "../../api/getPlaylists";
 import { Loader } from "../Loader/Loader";
-import { PlaylistType } from "../../types/types";
 import { Link } from "@tanstack/react-router";
 import styles from "./Playlists.module.css";
 
@@ -27,14 +26,13 @@ export const Playlists = () => {
     <div className={styles.wrapper}>
       <NewPlaylist />
       <div className={styles.playlists}>
-        {playlists !== undefined && playlists !== null
-          ? playlists.map((playlist: PlaylistType, index: number) => {
+        {playlists
+          ? playlists.map((playlist, index) => {
               return (
                 <Link
                   className={styles.playlistCard}
                   to={`/playlists/${playlist.playlistId}`}
                   key={playlist.playlistId}
-                  data-testid={playlist.playlistId}
                 >
                   <img
                     className={styles.playlistCover}
