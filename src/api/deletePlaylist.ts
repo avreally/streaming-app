@@ -13,5 +13,5 @@ export async function deletePlaylist(playlistId: string) {
     throw new Error("Network response not ok");
   }
 
-  return response.json;
+  return response.json();
 }

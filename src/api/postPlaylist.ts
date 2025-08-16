@@ -17,8 +17,5 @@ export async function postPlaylist(playlistData: PlaylistType, userId: number) {
     throw new Error("Network response not ok");
   }
 
-  // const data = await response.json();
-  // return data;
-
-  return response.json;
+  return response.json();
 }

@@ -11,6 +11,9 @@ export async function getPlaylists(): Promise<PlaylistType[]> {
     credentials: "include",
   });
 
-  const data = await response.json();
-  return data;
+  if (!response.ok) {
+    throw new Error("Network response not ok");
+  }
+
+  return response.json();
 }

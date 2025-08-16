@@ -1,17 +1,12 @@
+import axios from "axios";
 import { User } from "../types/types";
 
 const baseUrl = "http://localhost:3001";
 
 export async function getUser(): Promise<User> {
-  const response = await fetch(`${baseUrl}/me`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
+  const response = await axios.get(`${baseUrl}/me`, {
+    withCredentials: true,
   });
 
-  const data = await response.json();
-
-  return data;
+  return response.data;
 }

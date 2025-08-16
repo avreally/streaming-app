@@ -8,8 +8,12 @@ export async function getTracks(): Promise<TrackType[]> {
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: "include",
   });
 
-  const data = await response.json();
-  return data;
+  if (!response.ok) {
+    throw new Error("Network response not ok");
+  }
+
+  return response.json();
 }
