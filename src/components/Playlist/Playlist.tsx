@@ -11,6 +11,7 @@ import { getTracks } from "../../api/getTracks";
 import { deletePlaylist } from "../../api/deletePlaylist";
 import DeleteConfirmation from "../DeleteConfirmation/DeleteConfirmation";
 import styles from "./Playlist.module.css";
+import { Tracks } from "../Tracks/Tracks";
 
 type PlaylistProps = {
   playlistId: string;
@@ -20,7 +21,6 @@ export const Playlist = ({ playlistId }: PlaylistProps) => {
   const {
     isLoading: isLoadingPlaylists,
     data: playlists,
-    error: playlistsError,
     isSuccess: isSuccessPlaylists,
   } = useQuery({
     queryKey: ["playlists"],
@@ -30,7 +30,6 @@ export const Playlist = ({ playlistId }: PlaylistProps) => {
   const {
     isLoading: isLoadingTracks,
     data: tracks,
-    error: tracksError,
     isSuccess: isSuccessTracks,
   } = useQuery({
     queryKey: ["tracks"],
@@ -44,8 +43,8 @@ export const Playlist = ({ playlistId }: PlaylistProps) => {
     return <Loader />;
   }
 
-  if (!isSuccessPlaylists && !isSuccessTracks) {
-    return null;
+  if (!isSuccessPlaylists || !isSuccessTracks) {
+    return <div>Error loading data.</div>;
   }
 
   const playlist = playlists.find((playlist) => {
@@ -71,6 +70,7 @@ export const Playlist = ({ playlistId }: PlaylistProps) => {
   });
 
   function handleDelete() {
+    if (!playlist) return;
     deletePlaylist(playlist.playlistId);
     setShowModal(false);
     navigate({ to: "/playlists" });
@@ -96,21 +96,39 @@ export const Playlist = ({ playlistId }: PlaylistProps) => {
         </div>
       </div>
       <div className={styles.tracksWrapper}>
-        {playlistTrackIds.length === 0 ? (
-          <div>No tracks here yet 🎧</div>
-        ) : null}
         {isLoadingPlaylists || isLoadingTracks ? (
           <Loader />
         ) : playlistTracks !== undefined ? (
-          playlistTracks.map((track: TrackType) => (
-            <Track
-              key={track.id}
-              id={track.id}
-              title={track.title}
-              url={track.url}
-              artist={track.artist}
-            />
-          ))
+          <>
+            {playlistTracks.map((track) => (
+              <Track
+                key={track.id}
+                id={track.id}
+                title={track.title}
+                url={track.url}
+                artist={track.artist}
+              />
+            ))}
+            {playlistTrackIds.length === 0 ? (
+              <>
+                <h3 className={styles.recommended}>
+                  🎧 No tracks here yet, add something from the list below:
+                </h3>
+                <div className={styles.tracks}>
+                  <Tracks isRecommended />
+                </div>
+              </>
+            ) : (
+              <>
+                <h3 className={styles.recommended}>
+                  Other tracks you can add:
+                </h3>
+                <div className={styles.tracks}>
+                  <Tracks isRecommended />
+                </div>
+              </>
+            )}
+          </>
         ) : null}
       </div>
       {showModal && (
