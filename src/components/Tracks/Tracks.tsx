@@ -5,7 +5,11 @@ import { TrackType } from "../../types/types";
 import { Loader } from "../Loader/Loader";
 import styles from "./Tracks.module.css";
 
-export const Tracks = () => {
+type TracksProps = {
+  isRecommended?: boolean;
+};
+
+export const Tracks = ({ isRecommended }: TracksProps) => {
   const {
     isLoading,
     data: tracks,
@@ -32,6 +36,7 @@ export const Tracks = () => {
                 title={track.title}
                 url={track.url}
                 artist={track.artist}
+                hasAddButton={isRecommended}
               />
             ))
           : null}

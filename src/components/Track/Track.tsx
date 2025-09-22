@@ -10,9 +10,10 @@ type TrackProps = {
   title: string;
   url: string;
   artist: string;
+  hasAddButton?: boolean;
 };
 
-export const Track = ({ id, title, url, artist }: TrackProps) => {
+export const Track = ({ id, title, url, artist, hasAddButton }: TrackProps) => {
   const [showModal, setShowModal] = useState(false);
   const [isPlaylistSelected, setIsPlaylistSelected] = useState(false);
   const [playlistTitle, setPlaylistTitle] = useState("");
@@ -23,6 +24,8 @@ export const Track = ({ id, title, url, artist }: TrackProps) => {
     setPlaylistTitle(title);
   }
 
+  const buttonText = hasAddButton ? "Add" : "Add to playlist...";
+
   return (
     <li className={styles.track}>
       <div className={styles.wrapper}>
@@ -32,7 +35,7 @@ export const Track = ({ id, title, url, artist }: TrackProps) => {
           <p className={styles.artist}>{artist}</p>
         </div>
       </div>
-      <Button onClick={() => setShowModal(true)}>Add to playlist...</Button>
+      <Button onClick={() => setShowModal(true)}>{buttonText}</Button>
       {showModal && (
         <Modal
           isShown={showModal}
