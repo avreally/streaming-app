@@ -84,7 +84,7 @@ app.get("/oauth-callback", async (req, res) => {
 
     res.redirect("http://localhost:5173/");
     res.end();
-  } catch (error) {
+  } catch {
     res.status(500).json({ error: "Failed to authenticate" });
     res.redirect("http://localhost:5173/login?error=auth_failed");
   }
@@ -105,7 +105,7 @@ app.get("/me", async (req, res) => {
 });
 
 app.get("/signout", (req, res) => {
-  req.session.destroy((err: any) => {
+  req.session.destroy((err) => {
     console.error(err);
     res.clearCookie("connect.sid");
     res.redirect("http://localhost:5173/");
