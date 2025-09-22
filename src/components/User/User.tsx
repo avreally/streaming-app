@@ -8,18 +8,26 @@ import { Loader } from "../Loader/Loader";
 export const User = () => {
   const { isLoading, data, error } = useQuery({
     queryKey: ["user"],
-    queryFn: () => getUser(),
+    queryFn: () =>
+      getUser().catch((error) => {
+        if (error.status !== 401) {
+          throw error;
+        }
+        return null;
+      }),
+    retry: false,
   });
 
   useEffect(() => {
-    if (data !== undefined) {
+    if (data) {
       setUser(data);
     }
   }, [data]);
 
   const { user, setUser } = useContext(UserContext);
 
-  const userName = user?.userName ? user.userName : "sign in";
+  const greeting = user?.userName ? `Hey ${user.userName}!` : "Hey, sign in!";
+
   const avatarUrl = user?.avatarUrl
     ? user.avatarUrl
     : "https://picsum.photos/200";
@@ -28,12 +36,14 @@ export const User = () => {
     return <Loader />;
   }
 
-  if (error) return "An error has occurred: " + error.message;
+  if (error) {
+    return "Something went wrong";
+  }
 
   return (
     <div className="user">
       <img src={avatarUrl} alt="user-avatar" className="user-avatar" />
-      <p>Hey, {userName}!</p>
+      <p>{greeting}</p>
     </div>
   );
 };
