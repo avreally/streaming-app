@@ -6,8 +6,8 @@ import { IconPlus } from "../Icons/IconPlus";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postPlaylist } from "../../api/postPlaylist";
 import { UserContext } from "../../contexts";
-import styles from "./NewPlaylist.module.css";
 import { PlaylistType } from "../../types/types";
+import styles from "./NewPlaylist.module.css";
 
 export const NewPlaylist = () => {
   const [isFormVisible, setIsFormVisible] = useState(false);
@@ -45,12 +45,15 @@ export const NewPlaylist = () => {
     mutationFn: function (event: React.FormEvent<HTMLFormElement>) {
       event.preventDefault();
 
+      if (!user) {
+        return Promise.reject(new Error("User not found"));
+      }
+
       const newPlaylist = createPlaylist(playlistName.trim());
 
       setIsFormVisible(false);
       setPlaylistName("");
 
-      // TODO fix this warning
       return postPlaylist(newPlaylist, user.githubUserId);
       // ?? add to local storage
     },
@@ -64,10 +67,20 @@ export const NewPlaylist = () => {
     setPlaylistName("");
   }
 
+  function handleCreatePlaylistClick() {
+    setIsFormVisible(true);
+    mutation.reset();
+  }
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    mutation.mutate(event);
+    mutation.reset();
+  }
+
   return (
     <div className={styles.wrapper}>
       <Button
-        onClick={() => setIsFormVisible(true)}
+        onClick={handleCreatePlaylistClick}
         className={clsx(styles.createButton, {
           [styles.invisible]: isFormVisible,
           [styles.visible]: !isFormVisible,
@@ -76,45 +89,41 @@ export const NewPlaylist = () => {
       >
         Create New Playlist
       </Button>
-      {mutation.isSuccess ? (
-        <div>Created!</div>
-      ) : (
-        <form
-          className={clsx(styles.form, {
-            [styles.visible]: isFormVisible,
-            [styles.invisible]: !isFormVisible,
-          })}
-          onSubmit={mutation.mutate}
-        >
-          <input
-            ref={inputRef}
-            className={styles.input}
-            id="playlistName"
-            type="text"
-            name="playlistName"
-            onChange={handleInput}
-            value={playlistName}
-          />
-          <div className={styles.buttons}>
-            <Button
-              type="submit"
-              variant="primary"
-              disabled={isSubmitButtonDisabled}
-              className={styles.submitButton}
-            >
-              Create
-            </Button>
-            <Button
-              onClick={handleCancel}
-              type="button"
-              variant="tertiary"
-              className={styles.cancelButton}
-            >
-              <IconPlus className={styles.cancelButtonImage} />
-            </Button>
-          </div>
-        </form>
-      )}
+      <form
+        className={clsx(styles.form, {
+          [styles.visible]: isFormVisible,
+          [styles.invisible]: !isFormVisible,
+        })}
+        onSubmit={handleSubmit}
+      >
+        <input
+          ref={inputRef}
+          className={styles.input}
+          id="playlistName"
+          type="text"
+          name="playlistName"
+          onChange={handleInput}
+          value={playlistName}
+        />
+        <div className={styles.buttons}>
+          <Button
+            type="submit"
+            variant="primary"
+            disabled={isSubmitButtonDisabled}
+            className={styles.submitButton}
+          >
+            Create
+          </Button>
+          <Button
+            onClick={handleCancel}
+            type="button"
+            variant="tertiary"
+            className={styles.cancelButton}
+          >
+            <IconPlus className={styles.cancelButtonImage} />
+          </Button>
+        </div>
+      </form>
     </div>
   );
 };
