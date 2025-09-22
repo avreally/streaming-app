@@ -10,6 +10,7 @@ import {
   findUserById,
   createNewPlaylist,
   deletePlaylist,
+  addTrackToPlaylist,
 } from "./services/database.service.js";
 import { Playlist } from "./types/playlist.js";
 
@@ -91,13 +92,13 @@ app.get("/oauth-callback", async (req, res) => {
 
 app.get("/me", async (req, res) => {
   if (!req.session.userId) {
-    res.status(401).json(null);
+    res.status(401).send();
     return;
   }
 
   const user = await findUserById(Number(req.session.userId));
   if (!user) {
-    res.status(404).json(null);
+    res.status(404).send();
     return;
   }
   res.send(user);
@@ -124,13 +125,13 @@ app.get("/tracks", async (req, res) => {
 
 app.get("/playlists", async (req, res) => {
   if (!req.session.userId) {
-    res.status(401).json(null);
+    res.status(401).send();
     return;
   }
 
   const user = await findUserById(Number(req.session.userId));
   if (!user) {
-    res.status(404).json(null);
+    res.status(404).send();
     return;
   }
 
@@ -140,7 +141,7 @@ app.get("/playlists", async (req, res) => {
 
 app.post("/playlists", async (req, res) => {
   if (!req.session.userId) {
-    res.status(401).json(null);
+    res.status(401).send();
     return;
   }
 
@@ -152,6 +153,15 @@ app.post("/playlists", async (req, res) => {
   );
 
   res.send(playlist);
+});
+
+app.post("/playlists/:id", async (req, res) => {
+  const id = req.params.id;
+  const trackId = req.body.trackId;
+
+  addTrackToPlaylist(id, trackId, Number(req.session.userId));
+
+  res.status(204).end();
 });
 
 app.delete("/playlists/:id", async (req, res) => {

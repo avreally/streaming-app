@@ -73,6 +73,21 @@ export async function createNewPlaylist(
   return playlist;
 }
 
+export async function addTrackToPlaylist(
+  playlistId: string,
+  trackId: string,
+  userId: number,
+) {
+  const foundUser = findUserById(userId);
+
+  const foundPlaylist = foundUser?.playlists.find((playlist) => {
+    return playlist.playlistId === playlistId;
+  });
+
+  foundPlaylist?.playlistTracks.push(trackId);
+  await db.write();
+}
+
 export async function deletePlaylist(playlistId: string, userId: number) {
   const foundUser = findUserById(userId);
 
