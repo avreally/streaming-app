@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { getPlaylists } from "../../api/getPlaylists";
 import { Loader } from "../Loader/Loader";
 import { Track } from "../Track/Track";
 import { useNavigate } from "@tanstack/react-router";
@@ -10,8 +9,9 @@ import { TrackType } from "../../types/types";
 import { getTracks } from "../../api/getTracks";
 import { deletePlaylist } from "../../api/deletePlaylist";
 import DeleteConfirmation from "../DeleteConfirmation/DeleteConfirmation";
-import styles from "./Playlist.module.css";
 import { Tracks } from "../Tracks/Tracks";
+import { getPlaylistById } from "../../api/getPlaylistById";
+import styles from "./Playlist.module.css";
 
 type PlaylistProps = {
   playlistId: string;
@@ -19,12 +19,12 @@ type PlaylistProps = {
 
 export const Playlist = ({ playlistId }: PlaylistProps) => {
   const {
-    isLoading: isLoadingPlaylists,
-    data: playlists,
-    isSuccess: isSuccessPlaylists,
+    isLoading: isLoadingPlaylist,
+    data: playlist,
+    isSuccess: isSuccessPlaylist,
   } = useQuery({
-    queryKey: ["playlists"],
-    queryFn: () => getPlaylists(),
+    queryKey: ["playlist", playlistId],
+    queryFn: () => getPlaylistById(playlistId),
   });
 
   const {
@@ -39,17 +39,13 @@ export const Playlist = ({ playlistId }: PlaylistProps) => {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
-  if (isLoadingPlaylists || isLoadingTracks) {
+  if (isLoadingPlaylist || isLoadingTracks) {
     return <Loader />;
   }
 
-  if (!isSuccessPlaylists || !isSuccessTracks) {
+  if (!isSuccessPlaylist || !isSuccessTracks) {
     return <div>Error loading data.</div>;
   }
-
-  const playlist = playlists.find((playlist) => {
-    return playlist.playlistId === playlistId;
-  });
 
   if (!playlist) {
     return <div>Playlist doesn&apos;t exist</div>;
@@ -96,7 +92,7 @@ export const Playlist = ({ playlistId }: PlaylistProps) => {
         </div>
       </div>
       <div className={styles.tracksWrapper}>
-        {isLoadingPlaylists || isLoadingTracks ? (
+        {isLoadingPlaylist || isLoadingTracks ? (
           <Loader />
         ) : playlistTracks !== undefined ? (
           <>
@@ -107,6 +103,7 @@ export const Playlist = ({ playlistId }: PlaylistProps) => {
                 title={track.title}
                 url={track.url}
                 artist={track.artist}
+                includedInPlaylist
               />
             ))}
             {playlistTrackIds.length === 0 ? (
@@ -115,7 +112,7 @@ export const Playlist = ({ playlistId }: PlaylistProps) => {
                   🎧 No tracks here yet, add something from the list below:
                 </h3>
                 <div className={styles.tracks}>
-                  <Tracks isRecommended />
+                  <Tracks isRecommended currentPlaylistId={playlistId} />
                 </div>
               </>
             ) : (
@@ -124,7 +121,7 @@ export const Playlist = ({ playlistId }: PlaylistProps) => {
                   Other tracks you can add:
                 </h3>
                 <div className={styles.tracks}>
-                  <Tracks isRecommended />
+                  <Tracks isRecommended currentPlaylistId={playlistId} />
                 </div>
               </>
             )}

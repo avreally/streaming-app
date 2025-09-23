@@ -7,9 +7,10 @@ import styles from "./Tracks.module.css";
 
 type TracksProps = {
   isRecommended?: boolean;
+  currentPlaylistId?: string;
 };
 
-export const Tracks = ({ isRecommended }: TracksProps) => {
+export const Tracks = ({ isRecommended, currentPlaylistId }: TracksProps) => {
   const {
     isLoading,
     data: tracks,
@@ -37,6 +38,7 @@ export const Tracks = ({ isRecommended }: TracksProps) => {
                 url={track.url}
                 artist={track.artist}
                 hasAddButton={isRecommended}
+                currentPlaylistId={currentPlaylistId}
               />
             ))
           : null}

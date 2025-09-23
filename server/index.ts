@@ -155,6 +155,26 @@ app.post("/playlists", async (req, res) => {
   res.send(playlist);
 });
 
+app.get("/playlists/:id", async (req, res) => {
+  if (!req.session.userId) {
+    res.status(401).send();
+    return;
+  }
+
+  const user = await findUserById(Number(req.session.userId));
+  if (!user) {
+    res.status(404).send();
+    return;
+  }
+
+  const id = req.params.id;
+  const playlist = user.playlists.find((playlist) => {
+    return playlist.playlistId === id;
+  });
+
+  res.send(playlist);
+});
+
 app.post("/playlists/:id", async (req, res) => {
   const id = req.params.id;
   const trackId = req.body.trackId;

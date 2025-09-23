@@ -3,6 +3,8 @@ import { Button } from "../Button/Button";
 import Modal from "../Modal/Modal";
 import PlaylistSelector from "../PlaylistSelector/PlaylistSelector";
 import { IconCheck } from "../Icons/IconCheck";
+import { postTrack } from "../../api/postTrack";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import styles from "./Track.module.css";
 
 type TrackProps = {
@@ -11,12 +13,42 @@ type TrackProps = {
   url: string;
   artist: string;
   hasAddButton?: boolean;
+  includedInPlaylist?: boolean;
+  currentPlaylistId?: string;
 };
 
-export const Track = ({ id, title, url, artist, hasAddButton }: TrackProps) => {
+export const Track = ({
+  id,
+  title,
+  url,
+  artist,
+  hasAddButton,
+  includedInPlaylist,
+  currentPlaylistId,
+}: TrackProps) => {
   const [showModal, setShowModal] = useState(false);
   const [isPlaylistSelected, setIsPlaylistSelected] = useState(false);
   const [playlistTitle, setPlaylistTitle] = useState("");
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: function (currentPlaylistId: string) {
+      return postTrack(currentPlaylistId, id);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["playlist", currentPlaylistId],
+      });
+    },
+  });
+
+  function handleClick() {
+    if (!includedInPlaylist && currentPlaylistId) {
+      mutation.mutate(currentPlaylistId);
+    } else {
+      setShowModal(true);
+    }
+  }
 
   function handleSelectPlaylist(title: string) {
     setShowModal(false);
@@ -35,7 +67,7 @@ export const Track = ({ id, title, url, artist, hasAddButton }: TrackProps) => {
           <p className={styles.artist}>{artist}</p>
         </div>
       </div>
-      <Button onClick={() => setShowModal(true)}>{buttonText}</Button>
+      <Button onClick={handleClick}>{buttonText}</Button>
       {showModal && (
         <Modal
           isShown={showModal}
