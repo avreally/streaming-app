@@ -16,8 +16,10 @@ function DeleteConfirmation({
 }: DeleteConfirmationProps) {
   return (
     <>
-      <h3>Delete {itemType}</h3>
-      <p>Are you sure you want to delete &quot;{itemName}&quot;?</p>
+      <h3 className={styles.title}>Delete {itemType}</h3>
+      <p className={styles.text}>
+        Are you sure you want to delete &quot;{itemName}&quot;?
+      </p>
       <div className={styles.buttons}>
         <Button className={styles.button} onClick={onCancel}>
           Cancel
