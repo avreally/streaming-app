@@ -8,12 +8,12 @@ type DeleteConfirmationProps = {
   onCancel: () => void;
 };
 
-function DeleteConfirmation({
+export const DeleteConfirmation = ({
   itemType,
   itemName,
   onConfirm,
   onCancel,
-}: DeleteConfirmationProps) {
+}: DeleteConfirmationProps) => {
   return (
     <>
       <h3 className={styles.title}>Delete {itemType}</h3>
@@ -30,6 +30,4 @@ function DeleteConfirmation({
       </div>
     </>
   );
-}
-
-export default DeleteConfirmation;
+};

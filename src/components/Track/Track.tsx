@@ -1,12 +1,12 @@
 import { useRef, useState } from "react";
 import { Button } from "../Button/Button";
-import Modal from "../Modal/Modal";
-import PlaylistSelector from "../PlaylistSelector/PlaylistSelector";
+import { PlaylistSelector } from "../PlaylistSelector/PlaylistSelector";
+import { Modal } from "../Modal/Modal";
 import { IconCheck } from "../Icons/IconCheck";
 import { postTrack } from "../../api/postTrack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { IconDelete } from "../Icons/IconDelete";
-import DeleteConfirmation from "../DeleteConfirmation/DeleteConfirmation";
+import { DeleteConfirmation } from "../DeleteConfirmation/DeleteConfirmation";
 import { deleteTrack } from "../../api/deleteTrack";
 import styles from "./Track.module.css";
 

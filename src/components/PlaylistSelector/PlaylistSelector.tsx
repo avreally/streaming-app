@@ -9,7 +9,10 @@ type PlaylistSelectorProps = {
   trackId: string;
 };
 
-function PlaylistSelector({ onSelect, trackId }: PlaylistSelectorProps) {
+export const PlaylistSelector = ({
+  onSelect,
+  trackId,
+}: PlaylistSelectorProps) => {
   const { data: playlists } = useQuery({
     queryKey: ["playlists"],
     queryFn: () => getPlaylists(),
@@ -54,6 +57,4 @@ function PlaylistSelector({ onSelect, trackId }: PlaylistSelectorProps) {
       </div>
     </div>
   );
-}
-
-export default PlaylistSelector;
+};

@@ -8,12 +8,12 @@ type ModalProps = {
   variant?: "danger" | "playlist-selector";
 };
 
-function Modal({
+export const Modal = ({
   isShown,
   onCancel,
   variant,
   children,
-}: PropsWithChildren<ModalProps>) {
+}: PropsWithChildren<ModalProps>) => {
   const handleKeyUp = useCallback(
     (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -48,6 +48,4 @@ function Modal({
       </div>
     </div>
   );
-}
-
-export default Modal;
+};
