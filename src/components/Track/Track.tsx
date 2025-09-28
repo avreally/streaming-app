@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "../Button/Button";
 import Modal from "../Modal/Modal";
 import PlaylistSelector from "../PlaylistSelector/PlaylistSelector";
@@ -33,6 +33,7 @@ export const Track = ({
   const [showModalDelete, setShowModalDelete] = useState(false);
   const [showNotificationAdded, setShowNotificationAdded] = useState(false);
   const [playlistTitle, setPlaylistTitle] = useState("");
+  const timeoutIdRef = useRef<number>(undefined);
   const queryClient = useQueryClient();
 
   const addTrackMutation = useMutation({
@@ -69,6 +70,9 @@ export const Track = ({
   function handleSelectPlaylist(title: string) {
     setShowModalAdd(false);
     setShowNotificationAdded(true);
+    timeoutIdRef.current = window.setTimeout(() => {
+      setShowNotificationAdded(false);
+    }, 2000);
     setPlaylistTitle(title);
   }
 
@@ -112,7 +116,10 @@ export const Track = ({
       {showNotificationAdded && (
         <Modal
           isShown={showNotificationAdded}
-          onCancel={() => setShowNotificationAdded(false)}
+          onCancel={() => {
+            setShowNotificationAdded(false);
+            clearTimeout(timeoutIdRef.current);
+          }}
         >
           <div className={styles.container}>
             <IconCheck className={styles.checkmark} />
