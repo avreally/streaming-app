@@ -1,6 +1,8 @@
 import { Low } from "lowdb";
+import { resolve } from "node:path";
 import { Track } from "../types/track.js";
 import { User } from "../types/user.js";
+import { Playlist } from "../types/playlist.js";
 
 type Data = {
   tracks: Track[];
@@ -16,7 +18,10 @@ let db: Low<Data>;
 
 export async function connectToDatabase() {
   const { JSONFilePreset } = await import("lowdb/node");
-  db = await JSONFilePreset<Data>("db.json", defaultData);
+  db = await JSONFilePreset<Data>(
+    resolve(import.meta.dirname, "..", "db.json"),
+    defaultData,
+  );
 
   console.log(`Successfully connected to database`);
 }
@@ -37,6 +42,7 @@ export async function createNewUser({ id, login, avatar_url }: GitHubUser) {
     userName: login,
     favouriteTrackIds: [],
     avatarUrl: avatar_url,
+    playlists: [],
   };
 
   db.data.users.push(user);
@@ -46,4 +52,78 @@ export async function createNewUser({ id, login, avatar_url }: GitHubUser) {
 
 export function findUserById(id: number) {
   return db.data.users.find((user) => user.githubUserId === id);
+}
+
+export async function createNewPlaylist(
+  { playlistId, title, playlistTracks }: Playlist,
+  userId: number,
+) {
+  const playlist: Playlist = {
+    playlistId: playlistId,
+    title: title,
+    playlistTracks: playlistTracks,
+  };
+
+  const foundUser = findUserById(userId);
+
+  if (foundUser) {
+    foundUser["playlists"].unshift(playlist);
+  }
+  await db.write();
+  return playlist;
+}
+
+export async function addTrackToPlaylist(
+  playlistId: string,
+  trackId: string,
+  userId: number,
+) {
+  const foundUser = findUserById(userId);
+
+  const foundPlaylist = foundUser?.playlists.find((playlist) => {
+    return playlist.playlistId === playlistId;
+  });
+
+  foundPlaylist?.playlistTracks.push(trackId);
+  await db.write();
+}
+
+export async function deletePlaylist(playlistId: string, userId: number) {
+  const foundUser = findUserById(userId);
+
+  if (foundUser) {
+    foundUser["playlists"] = foundUser["playlists"].filter((playlist) => {
+      return playlist.playlistId !== playlistId;
+    });
+  }
+
+  await db.write();
+}
+
+export async function deleteTrack(
+  playlistId: string,
+  trackId: string,
+  userId: number,
+) {
+  const foundUser = findUserById(userId);
+
+  if (!foundUser) {
+    return;
+  }
+
+  const foundPlaylist = foundUser.playlists.find((playlist) => {
+    return playlist.playlistId === playlistId;
+  });
+
+  if (!foundPlaylist) {
+    return;
+  }
+
+  foundPlaylist.playlistTracks = foundPlaylist.playlistTracks.filter(
+    (track) => {
+      return track !== trackId;
+    },
+  );
+
+  await db.write();
 }

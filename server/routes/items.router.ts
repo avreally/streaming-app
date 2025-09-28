@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { collections } from "../services/database.service";
+import { collections } from "../services/database.service.js";
 
 export const itemsRouter = express.Router();
 

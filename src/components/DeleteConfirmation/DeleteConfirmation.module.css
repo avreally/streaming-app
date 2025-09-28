@@ -1,0 +1,38 @@
+.title,
+.text {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.button {
+  width: 6.5rem;
+}
+
+@media (min-width: 768px) {
+  .modal {
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .modal {
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 24rem;
+  }
+
+  .buttons {
+    width: 100%;
+  }
+
+  .button {
+    width: 7rem;
+  }
+}

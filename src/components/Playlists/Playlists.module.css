@@ -1,0 +1,85 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.playlists {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.playlistCard {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid hsl(230, 79%, 75%);
+  border-radius: 0.25rem;
+  gap: 1.5rem;
+  text-decoration: none;
+  transition: border-color 200ms, background-color 200ms;
+}
+
+.playlistCard:hover {
+  border-color: hsl(230, 84%, 60%);
+  background-color: hsl(202, 94%, 6%);
+}
+
+.playlistCover {
+  width: 70px;
+  height: 70px;
+}
+
+.name {
+  color: white;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 0.25rem;
+  max-width: 100%;
+}
+
+@media (min-width: 768px) {
+  .wrapper {
+    gap: 1.5rem;
+  }
+
+  .playlists {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .playlistCard {
+    flex-direction: column;
+    align-items: center;
+    width: 16rem;
+    padding: 1rem;
+    border: 1px solid hsl(230, 79%, 75%);
+    border-radius: 0.25rem;
+    text-decoration: none;
+    transition: border-color 200ms, background-color 200ms;
+  }
+  .playlistCover {
+    width: 100%;
+    height: auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  .playlists {
+    gap: 1.5rem;
+  }
+  .playlistCard {
+    padding: 1.5rem;
+  }
+
+  .playlistCover {
+    width: 200px;
+    height: 200px;
+  }
+}

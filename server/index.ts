@@ -8,7 +8,12 @@ import {
   createNewUser,
   getAllTracks,
   findUserById,
+  createNewPlaylist,
+  deletePlaylist,
+  addTrackToPlaylist,
+  deleteTrack,
 } from "./services/database.service.js";
+import { Playlist } from "./types/playlist.js";
 
 dotenv.config();
 const app = express();
@@ -80,7 +85,7 @@ app.get("/oauth-callback", async (req, res) => {
 
     res.redirect("http://localhost:5173/");
     res.end();
-  } catch (error) {
+  } catch {
     res.status(500).json({ error: "Failed to authenticate" });
     res.redirect("http://localhost:5173/login?error=auth_failed");
   }
@@ -88,20 +93,20 @@ app.get("/oauth-callback", async (req, res) => {
 
 app.get("/me", async (req, res) => {
   if (!req.session.userId) {
-    res.status(401).json(null);
+    res.status(401).send();
     return;
   }
 
   const user = await findUserById(Number(req.session.userId));
   if (!user) {
-    res.status(404).json(null);
+    res.status(404).send();
     return;
   }
   res.send(user);
 });
 
 app.get("/signout", (req, res) => {
-  req.session.destroy((err: any) => {
+  req.session.destroy((err) => {
     console.error(err);
     res.clearCookie("connect.sid");
     res.redirect("http://localhost:5173/");
@@ -117,6 +122,82 @@ app.get("/tracks", async (req, res) => {
   const tracks = getAllTracks();
 
   res.send(tracks);
+});
+
+app.get("/playlists", async (req, res) => {
+  if (!req.session.userId) {
+    res.status(401).send();
+    return;
+  }
+
+  const user = await findUserById(Number(req.session.userId));
+  if (!user) {
+    res.status(404).send();
+    return;
+  }
+
+  const playlists = user["playlists"];
+  res.send(playlists);
+});
+
+app.post("/playlists", async (req, res) => {
+  if (!req.session.userId) {
+    res.status(401).send();
+    return;
+  }
+
+  const { playlistId, title, playlistTracks }: Playlist = req.body.playlistData;
+
+  const playlist = createNewPlaylist(
+    { playlistId, title, playlistTracks },
+    Number(req.session.userId),
+  );
+
+  res.send(playlist);
+});
+
+app.get("/playlists/:id", async (req, res) => {
+  if (!req.session.userId) {
+    res.status(401).send();
+    return;
+  }
+
+  const user = await findUserById(Number(req.session.userId));
+  if (!user) {
+    res.status(404).send();
+    return;
+  }
+
+  const id = req.params.id;
+  const playlist = user.playlists.find((playlist) => {
+    return playlist.playlistId === id;
+  });
+
+  res.send(playlist);
+});
+
+app.post("/playlists/:id", async (req, res) => {
+  const id = req.params.id;
+  const trackId = req.body.trackId;
+
+  addTrackToPlaylist(id, trackId, Number(req.session.userId));
+
+  res.status(204).end();
+});
+
+app.delete("/playlists/:id", async (req, res) => {
+  const id = req.params.id;
+
+  deletePlaylist(id, Number(req.session.userId));
+  res.status(204).end();
+});
+
+app.delete("/playlists/:playlistId/tracks/:trackId", async (req, res) => {
+  const playlistId = req.params.playlistId;
+  const trackId = req.params.trackId;
+
+  await deleteTrack(playlistId, trackId, Number(req.session.userId));
+  res.status(204).end();
 });
 
 connectToDatabase()
