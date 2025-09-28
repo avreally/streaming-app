@@ -35,8 +35,19 @@
   text-align: left;
 }
 
+.buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
 .checkmark {
   height: 1.5rem;
   flex-shrink: 0;
   padding: 0.25rem;
+}
+
+.delete {
+  width: 1.5rem;
+  height: auto;
 }

@@ -5,7 +5,7 @@ import styles from "./Button.module.css";
 type ButtonProps = {
   onClick?: () => void;
   variant?: "primary" | "secondary" | "tertiary" | "danger";
-  size?: "default" | "fullWidth";
+  size?: "default" | "fullWidth" | "small";
   className?: string;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
@@ -28,6 +28,7 @@ export const Button = ({
         [styles.tertiary]: variant === "tertiary",
         [styles.danger]: variant === "danger",
         [styles.fullWidth]: size === "fullWidth",
+        [styles.small]: size === "small",
       })}
       onClick={onClick}
       type={type}

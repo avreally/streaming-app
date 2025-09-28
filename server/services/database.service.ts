@@ -99,3 +99,31 @@ export async function deletePlaylist(playlistId: string, userId: number) {
 
   await db.write();
 }
+
+export async function deleteTrack(
+  playlistId: string,
+  trackId: string,
+  userId: number,
+) {
+  const foundUser = findUserById(userId);
+
+  if (!foundUser) {
+    return;
+  }
+
+  const foundPlaylist = foundUser.playlists.find((playlist) => {
+    return playlist.playlistId === playlistId;
+  });
+
+  if (!foundPlaylist) {
+    return;
+  }
+
+  foundPlaylist.playlistTracks = foundPlaylist.playlistTracks.filter(
+    (track) => {
+      return track !== trackId;
+    },
+  );
+
+  await db.write();
+}

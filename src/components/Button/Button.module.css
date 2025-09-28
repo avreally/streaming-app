@@ -61,6 +61,11 @@
   width: 100%;
 }
 
+.small {
+  width: 3rem;
+  padding: 0.5rem 0.5rem;
+}
+
 .danger {
   border: 1px solid hsl(233, 42%, 37%);
   transition:

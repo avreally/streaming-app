@@ -11,6 +11,7 @@ import {
   createNewPlaylist,
   deletePlaylist,
   addTrackToPlaylist,
+  deleteTrack,
 } from "./services/database.service.js";
 import { Playlist } from "./types/playlist.js";
 
@@ -188,6 +189,14 @@ app.delete("/playlists/:id", async (req, res) => {
   const id = req.params.id;
 
   deletePlaylist(id, Number(req.session.userId));
+  res.status(204).end();
+});
+
+app.delete("/playlists/:playlistId/tracks/:trackId", async (req, res) => {
+  const playlistId = req.params.playlistId;
+  const trackId = req.params.trackId;
+
+  await deleteTrack(playlistId, trackId, Number(req.session.userId));
   res.status(204).end();
 });
 
