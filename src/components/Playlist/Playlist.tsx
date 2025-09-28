@@ -11,6 +11,7 @@ import { deletePlaylist } from "../../api/deletePlaylist";
 import DeleteConfirmation from "../DeleteConfirmation/DeleteConfirmation";
 import { Tracks } from "../Tracks/Tracks";
 import { getPlaylistById } from "../../api/getPlaylistById";
+import { RecommendedTracks } from "../RecommendedTracks/RecommendedTracks";
 import styles from "./Playlist.module.css";
 
 type PlaylistProps = {
@@ -72,6 +73,10 @@ export const Playlist = ({ playlistId }: PlaylistProps) => {
     navigate({ to: "/playlists" });
   }
 
+  const recommendedTracks = tracks.filter(
+    (track) => !playlistTrackIds.includes(track.id),
+  );
+
   return (
     <div className={styles.container}>
       <div className={styles.playlistInfo}>
@@ -104,6 +109,7 @@ export const Playlist = ({ playlistId }: PlaylistProps) => {
                 url={track.url}
                 artist={track.artist}
                 includedInPlaylist
+                currentPlaylistId={playlistId}
               />
             ))}
             {playlistTrackIds.length === 0 ? (
@@ -115,17 +121,14 @@ export const Playlist = ({ playlistId }: PlaylistProps) => {
                   <Tracks isRecommended currentPlaylistId={playlistId} />
                 </div>
               </>
-            ) : (
-              <>
-                <h3 className={styles.recommended}>
-                  Other tracks you can add:
-                </h3>
-                <div className={styles.tracks}>
-                  <Tracks isRecommended currentPlaylistId={playlistId} />
-                </div>
-              </>
-            )}
+            ) : null}
           </>
+        ) : null}
+        {recommendedTracks.length > 0 ? (
+          <RecommendedTracks
+            recommendedTracks={recommendedTracks}
+            currentPlaylistId={playlistId}
+          />
         ) : null}
       </div>
       {showModal && (

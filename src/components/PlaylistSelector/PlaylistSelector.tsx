@@ -32,6 +32,7 @@ function PlaylistSelector({ onSelect, trackId }: PlaylistSelectorProps) {
       <div className={styles.selector}>
         {playlists ? (
           playlists.map((playlist) => {
+            const isAdded = playlist.playlistTracks.includes(trackId);
             return (
               <Button
                 variant="tertiary"
@@ -40,8 +41,10 @@ function PlaylistSelector({ onSelect, trackId }: PlaylistSelectorProps) {
                   addToPlaylist(playlist.playlistId, trackId, playlist.title)
                 }
                 key={playlist.playlistId}
+                disabled={isAdded}
               >
                 <div className={styles.playlistTitle}>{playlist.title}</div>
+                {isAdded && <div>Added!</div>}
               </Button>
             );
           })

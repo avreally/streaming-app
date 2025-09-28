@@ -13,6 +13,8 @@
   border-bottom: 1px solid hsl(230, 50%, 26%);
   width: 100%;
   text-align: left;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .buttons {
